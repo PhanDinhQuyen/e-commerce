@@ -1,44 +1,64 @@
-const bcrypt = require("bcrypt");
+const User = require("../models/userModel");
+
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 const userController = {
   register: async (req, res) => {
     try {
       const { name, email, password } = req.body;
+
       const user = await User.findOne({ email });
-      if (user) {
-        return res
-          .status(400)
-          .json({ message: "The email address already exists" });
-      }
-      //Minimum eight characters, at least one letter, one number and one special character
+      if (user)
+        return res.status(400).json({ msg: "The email already exists." });
+
       if (!/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(password)) {
         return res.status(400).json({
-          success: false,
-          msg: "Minimum eight characters, at least one letter, one number and one special character",
+          msg: "Minimum eight characters, at least one letter and one number",
         });
       }
-      //Password Encryption
+
+      // Password Encryption
       const passwordHash = await bcrypt.hash(password, 10);
       const newUser = new User({
-        name: name,
-        email: email,
+        name,
+        email,
         password: passwordHash,
       });
-      //Save the new user to the database
+
+      // Save mongodb
       await newUser.save();
-      //Token
+
+      // Then create jsonwebtoken to authentication
       const accessToken = createAccessToken({ id: newUser._id });
-      const refreshToken = refreshAccessToken({ id: newUser._id });
+      const refreshToken = createRefreshToken({ id: newUser._id });
+
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        path: "/user/refresh_token",
+        path: "/user/refreshToken",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
       });
 
       res.json({ accessToken });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  refreshToken: (req, res) => {
+    try {
+      const rfToken = req.cookies.refreshToken;
+      if (!rfToken)
+        return res.status(400).json({ msg: "Please Login or Register" });
+
+      jwt.verify(rfToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err)
+          return res.status(400).json({ msg: "Please Login or Register" });
+
+        const accessToken = createAccessToken({ id: user.id });
+
+        res.json({ accessToken });
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -48,9 +68,8 @@ const userController = {
 const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "11m" });
 };
-const refreshAccessToken = (user) => {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
-  });
+const createRefreshToken = (user) => {
+  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };
+
 module.exports = userController;

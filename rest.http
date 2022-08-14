@@ -6,8 +6,18 @@ Content-Type: application/json
 
 {
   "name": "Quyen",
-  "email": "quyen1@example.com",
+  "email": "quyena1@example.com",
   "password": "1234567890abcdefghijklmn"
 }
 ###
 GET http://localhost:3041/user/refreshToken
+
+### Login
+POST http://localhost:3041/user/login
+Content-Type: application/json
+
+{
+  "name": "Quyen",
+  "email": "quyena21@example.com",
+  "password": "1234567890abcdefghijklmn"
+}

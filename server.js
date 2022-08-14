@@ -4,12 +4,18 @@ const cors = require("cors");
 const morgan = require("morgan");
 const express = require("express");
 const mongoose = require("mongoose");
+const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 
 const userRouter = require("./routers/userRouter");
 
 const app = express();
+app.use(
+  compression({
+    level: 6,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -38,7 +44,8 @@ mongoose.connect(
 );
 
 app.get("/", (req, res) => {
-  res.json({ msg: "Testing..." });
+  const str = "Hello \n";
+  res.send(str.repeat(10002));
 });
 
 //Start server

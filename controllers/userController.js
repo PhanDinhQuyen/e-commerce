@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 
 const jwt = require("jsonwebtoken");
-
 const bcrypt = require("bcrypt");
 
 const userController = {
@@ -41,6 +40,26 @@ const userController = {
       });
 
       res.json({ accessToken });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user)
+        return res
+          .status(400)
+          .json({ msg: "Please check your email address and try again." });
+      //Check password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid)
+        return res
+          .status(400)
+          .json({ msg: "Please check your password and try again." });
+
+      return res.json({ msg: "Login successful." });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

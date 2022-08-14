@@ -1,0 +1,13 @@
+GET http://localhost:3041/
+
+###
+POST http://localhost:3041/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Quyen",
+  "email": "quyen1@example.com",
+  "password": "1234567890abcdefghijklmn"
+}
+###
+GET http://localhost:3041/user/refreshToken

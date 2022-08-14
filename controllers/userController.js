@@ -12,11 +12,11 @@ const userController = {
       if (user)
         return res.status(400).json({ msg: "The email already exists." });
 
-      if (!/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(password)) {
-        return res.status(400).json({
-          msg: "Minimum eight characters, at least one letter and one number",
-        });
-      }
+      // if (!/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(password)) {
+      //   return res.status(400).json({
+      //     msg: "Minimum eight characters, at least one letter and one number",
+      //   });
+      // }
 
       // Password Encryption
       const passwordHash = await bcrypt.hash(password, 10);
@@ -76,7 +76,7 @@ const userController = {
 
         const accessToken = createAccessToken({ id: user.id });
 
-        res.json({ accessToken });
+        res.json({ accessToken, rfToken });
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

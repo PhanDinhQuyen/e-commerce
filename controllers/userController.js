@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userController = {
   register: async (req, res) => {
     try {
@@ -56,13 +57,20 @@ const userController = {
         return res
           .status(400)
           .json({ msg: "Please check your password and try again." });
+      const accessToken = createAccessToken({ id: user._id });
+      const refreshToken = createRefreshToken({ id: user._id });
 
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/user/refreshToken",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
       return res.json({ msg: "Login successful." });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
-  logout: async (req, res) => {
+  logout: async (_, res) => {
     try {
       res.clearCookie("refreshToken", { path: "/user/refreshToken" });
       return res.json({ msg: "Logout successful." });

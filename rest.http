@@ -18,10 +18,9 @@ Content-Type: application/json
 
 {
   "name": "Quyen",
-  "email": "quyena21@example.com",
+  "email": "quyena1@example.com",
   "password": "1234567890abcdefghijklmn"
 }
 
 ### Logout
-
 GET http://localhost:3041/user/logout

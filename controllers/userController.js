@@ -1,6 +1,5 @@
 const User = require("../models/userModel");
 
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userController = {
   register: async (req, res) => {
@@ -59,6 +58,14 @@ const userController = {
           .json({ msg: "Please check your password and try again." });
 
       return res.json({ msg: "Login successful." });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  logout: async (req, res) => {
+    try {
+      res.clearCookie("refreshToken", { path: "/user/refreshToken" });
+      return res.json({ msg: "Logout successful." });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

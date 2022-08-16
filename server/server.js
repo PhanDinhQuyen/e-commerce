@@ -14,6 +14,7 @@ const app = express();
 app.use(
   compression({
     level: 6,
+    chunkSize: 10 * 1000,
   })
 );
 app.use(express.json());
@@ -45,11 +46,11 @@ mongoose.connect(
 
 app.get("/", (req, res) => {
   const str = "Hello \n";
-  res.send(str.repeat(10002));
+  res.send(str.repeat(100));
 });
 
 //Start server
-const port = process.env.PORT || 3401;
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+const PORT = process.env.PORT || 3401;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });

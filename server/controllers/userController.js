@@ -32,9 +32,9 @@ const userController = {
       const accessToken = createAccessToken({ id: newUser._id });
       const refreshToken = createRefreshToken({ id: newUser._id });
 
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie("refreshtoken", refreshToken, {
         httpOnly: true,
-        path: "/user/refreshToken",
+        path: "/user/refreshtoken",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
       });
 
@@ -60,12 +60,12 @@ const userController = {
       const accessToken = createAccessToken({ id: user._id });
       const refreshToken = createRefreshToken({ id: user._id });
 
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie("refreshtoken", refreshToken, {
         httpOnly: true,
-        path: "/user/refreshToken",
+        path: "/user/refreshtoken",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
       });
-      return res.json({ msg: "Login successful." });
+      return res.json({ accessToken, isPasswordValid });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -78,20 +78,50 @@ const userController = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id).select("-password");
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+
+      return res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+  addCart: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const user = await User.findById(id).select("-password");
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      await User.findByIdAndUpdate(
+        { _id: id },
+        {
+          cart: req.body.cart,
+        }
+      );
+      res.status(200).json({ msg: "Cart added successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   refreshToken: (req, res) => {
     try {
-      const rfToken = req.cookies.refreshToken;
-      if (!rfToken)
+      const refreshtoken = req.cookies.refreshtoken;
+      if (!refreshtoken)
         return res.status(400).json({ msg: "Please Login or Register" });
 
-      jwt.verify(rfToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err)
-          return res.status(400).json({ msg: "Please Login or Register" });
+      jwt.verify(
+        refreshtoken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, user) => {
+          if (err)
+            return res.status(400).json({ msg: "Please Login or Register" });
 
-        const accessToken = createAccessToken({ id: user.id });
+          const accessToken = createAccessToken({ id: user.id });
 
-        res.json({ accessToken, rfToken });
-      });
+          res.status(200).json({ accessToken });
+        }
+      );
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -99,7 +129,7 @@ const userController = {
 };
 
 const createAccessToken = (user) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "11m" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
 };
 const createRefreshToken = (user) => {
   return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });

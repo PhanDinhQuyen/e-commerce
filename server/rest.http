@@ -1,6 +1,7 @@
+### Get home page
 GET http://localhost:3041/
 
-###
+### Register
 POST http://localhost:3041/user/register HTTP/1.1
 Content-Type: application/json
 
@@ -9,7 +10,8 @@ Content-Type: application/json
   "email": "quyena1@example.com",
   "password": "1234567890abcdefghijklmn"
 }
-###
+
+### Refresh Token
 GET http://localhost:3041/user/refreshToken
 
 ### Login
@@ -24,3 +26,6 @@ Content-Type: application/json
 
 ### Logout
 GET http://localhost:3041/user/logout
+
+### Infor user
+GET http://localhost:3041/user/infor

@@ -1,7 +1,6 @@
 const router = require("express").Router();
-const categoryController = require("../controllers/categoryController");
-const authorizationUser = require("../middleware/authorizationUser");
-const authorizationAdmin = require("../middleware/authorizationAdmin");
+const { categoryController } = require("../controllers");
+const { authorizationUser, authorizationAdmin } = require("../middleware");
 
 router
   .route("/category")
@@ -10,6 +9,19 @@ router
     authorizationUser,
     authorizationAdmin,
     categoryController.createCategory
+  );
+
+router
+  .route("/category/:id")
+  .delete(
+    authorizationUser,
+    authorizationAdmin,
+    categoryController.deleteCategory
+  )
+  .patch(
+    authorizationUser,
+    authorizationAdmin,
+    categoryController.updateCategory
   );
 
 module.exports = router;

@@ -8,14 +8,13 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 
-const userRouter = require("./routers/userRouter");
-const categoryRouter = require("./routers/categoryRouter");
+const { categoryRouter, userRouter, uploadRouter } = require("./routers");
 
 const app = express();
 app.use(
   compression({
     level: 6,
-    chunkSize: 10 * 1000,
+    chunkSize: 10 * 1024, // 10 megabytes
   })
 );
 app.use(express.json());
@@ -32,7 +31,7 @@ app.use(morgan("combined"));
 //Router
 app.use("/user", userRouter);
 app.use("/api", categoryRouter);
-
+app.get("/upload", uploadRouter);
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;
 mongoose.connect(
@@ -45,11 +44,6 @@ mongoose.connect(
     console.log("Connected to Mongoose successfully");
   }
 );
-
-app.get("/", (req, res) => {
-  const str = "Hello \n";
-  res.send(str.repeat(100));
-});
 
 //Start server
 const PORT = process.env.PORT || 3401;

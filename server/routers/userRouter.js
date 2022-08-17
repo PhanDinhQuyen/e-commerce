@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
-const userController = require("../controllers/userController");
-const authorizationUser = require("../middleware/authorizationUser");
+const { userController } = require("../controllers");
+const { authorizationUser } = require("../middleware");
 // Get
 router.get("/logout", userController.logout);
 router.get("/refreshtoken", userController.refreshToken);

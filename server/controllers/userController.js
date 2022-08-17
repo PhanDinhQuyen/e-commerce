@@ -1,7 +1,8 @@
-const User = require("../models/userModel");
+const { User } = require("../models");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const userController = {
   register: async (req, res) => {
     try {
@@ -70,7 +71,7 @@ const userController = {
       return res.status(500).json({ msg: err.message });
     }
   },
-  logout: async (_, res) => {
+  logout: async (req, res) => {
     try {
       res.clearCookie("refreshToken", { path: "/user/refreshToken" });
       return res.json({ msg: "Logout successful." });
@@ -131,6 +132,7 @@ const userController = {
 const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
 };
+
 const createRefreshToken = (user) => {
   return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };

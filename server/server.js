@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 
 const userRouter = require("./routers/userRouter");
+const categoryRouter = require("./routers/categoryRouter");
 
 const app = express();
 app.use(
@@ -30,6 +31,7 @@ app.use(morgan("combined"));
 
 //Router
 app.use("/user", userRouter);
+app.use("/api", categoryRouter);
 
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;

@@ -39,7 +39,7 @@ const userController = {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
       });
 
-      res.json({ accessToken });
+      return res.status(200).json({ accessToken });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

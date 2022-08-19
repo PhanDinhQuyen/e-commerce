@@ -8,7 +8,12 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 
-const { categoryRouter, userRouter, uploadRouter } = require("./routers");
+const {
+  categoryRouter,
+  userRouter,
+  uploadRouter,
+  productRouter,
+} = require("./routers");
 
 const app = express();
 //Middleware
@@ -33,10 +38,9 @@ app.use(morgan("combined"));
 app.use("/user", userRouter);
 app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
-
+app.use("/api", productRouter);
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;
-console.log(URI);
 mongoose.connect(
   URI,
   {

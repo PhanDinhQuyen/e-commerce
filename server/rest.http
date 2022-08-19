@@ -28,3 +28,6 @@ GET http://localhost:3041/user/logout
 
 ### Infor user
 GET http://localhost:3041/user/infor
+###
+
+POST http://localhost:3041/api/upload

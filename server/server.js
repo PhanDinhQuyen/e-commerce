@@ -11,6 +11,7 @@ const fileUpload = require("express-fileupload");
 const { categoryRouter, userRouter, uploadRouter } = require("./routers");
 
 const app = express();
+//Middleware
 app.use(
   compression({
     level: 6,
@@ -31,9 +32,11 @@ app.use(morgan("combined"));
 //Router
 app.use("/user", userRouter);
 app.use("/api", categoryRouter);
-app.get("/upload", uploadRouter);
+app.use("/api", uploadRouter);
+
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;
+console.log(URI);
 mongoose.connect(
   URI,
   {

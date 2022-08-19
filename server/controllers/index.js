@@ -1,4 +1,4 @@
 const categoryController = require("./categoryController");
 const userController = require("./userController");
-
-module.exports = { categoryController, userController };
+const uploadController = require("./uploadController");
+module.exports = { categoryController, userController, uploadController };

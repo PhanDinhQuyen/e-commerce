@@ -16,18 +16,40 @@ class APIFeatures {
       (excludedField) => delete queryObject[excludedField]
     );
     // console.log(queryObject);
-    let queryStringify = JSON.stringify(queryObject);
     const regex = /\b(gte|gt|lt|lte|regex)\b/g;
-    queryStringify = queryStringify.replace(regex, (match) => "$" + match);
-    console.log(queryStringify, queryObject);
+    //gte = greater than or equal
+    //lte = lesser than or equal
+    //lt = lesser than
+    //gt = greater than
+    const queryStringify = JSON.stringify(queryObject).replace(
+      regex,
+      (match) => "$" + match
+    );
+    console.log({ queryStringify, queryObject });
+    console.log(JSON.parse(queryStringify));
 
     this.query.find(JSON.parse(queryStringify));
     return this;
   }
 
-  sorting() {}
+  sorting() {
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(",").join(" ");
+      console.log(sortBy);
+      this.query = this.query.sort(sortBy);
+    } else {
+      this.query = this.query.sort("-createAt");
+    }
+    return this;
+  }
 
-  paginating() {}
+  paginating() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 2;
+    const skip = (page - 1) * limit;
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
 }
 
 const productController = {
@@ -71,10 +93,16 @@ const productController = {
   },
   getProducts: async (req, res) => {
     try {
-      const features = new APIFeatures(Product.find(), req.query).filtering();
+      const features = new APIFeatures(Product.find(), req.query)
+        .filtering()
+        .sorting()
+        .paginating();
 
       const products = await features.query;
-      return res.status(200).json({ products });
+      return res.status(200).json({
+        products,
+        totalProducts: products.length,
+      });
     } catch (err) {
       return res.status(500).json({ error: err });
     }

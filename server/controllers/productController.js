@@ -1,5 +1,35 @@
 const { Product } = require("../models");
 
+class APIFeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+
+  filtering() {
+    // console.log({ query: this.query, queryString: this.queryString });
+    const queryObject = { ...this.queryString };
+    // console.log(queryObject);
+
+    const excludedFields = ["sort", "page", "limit"];
+    excludedFields.forEach(
+      (excludedField) => delete queryObject[excludedField]
+    );
+    // console.log(queryObject);
+    let queryStringify = JSON.stringify(queryObject);
+    const regex = /\b(gte|gt|lt|lte|regex)\b/g;
+    queryStringify = queryStringify.replace(regex, (match) => "$" + match);
+    console.log(queryStringify, queryObject);
+
+    this.query.find(JSON.parse(queryStringify));
+    return this;
+  }
+
+  sorting() {}
+
+  paginating() {}
+}
+
 const productController = {
   createProduct: async (req, res) => {
     try {
@@ -41,7 +71,9 @@ const productController = {
   },
   getProducts: async (req, res) => {
     try {
-      const products = await Product.find();
+      const features = new APIFeatures(Product.find(), req.query).filtering();
+
+      const products = await features.query;
       return res.status(200).json({ products });
     } catch (err) {
       return res.status(500).json({ error: err });

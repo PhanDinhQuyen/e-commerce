@@ -2,14 +2,25 @@ const router = require("express").Router();
 const { authorizationUser, authorizationAdmin } = require("../middleware");
 const { productController } = require("../controllers");
 
-router
-  .route("/product")
-  .get(productController.getProducts)
-  .post(productController.createProduct);
+router.route("/products").get(productController.getProducts);
+router.post(
+  "/product",
+  authorizationUser,
+  authorizationAdmin,
+  productController.createProduct
+);
 
 router
   .route("/product/:id")
-  .delete(productController.deleteProduct)
-  .patch(productController.updateProduct);
+  .delete(
+    authorizationUser,
+    authorizationAdmin,
+    productController.deleteProduct
+  )
+  .patch(
+    authorizationUser,
+    authorizationAdmin,
+    productController.updateProduct
+  );
 
 module.exports = router;

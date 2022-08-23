@@ -1,8 +1,8 @@
 import { useState } from "react";
 import * as httpRequest from "~/utils/httpRequest";
 
-export default function Login() {
-  const [user, setUser] = useState({ email: "", password: "" });
+export default function Register() {
+  const [user, setUser] = useState({ email: "", password: "", name: "" });
 
   const handleOnChangeInput = (e) => {
     const { name, value } = e.target;
@@ -14,9 +14,9 @@ export default function Login() {
     console.log(user);
 
     try {
-      await httpRequest.post("user/login", { ...user });
+      await httpRequest.post("user/register", { ...user });
       localStorage.setItem("firstLogin", true);
-
+      alert("User registration successful");
       window.location.href = "/";
     } catch (error) {
       alert(error.response.data.msg);
@@ -26,6 +26,16 @@ export default function Login() {
   return (
     <form>
       <h2>Login</h2>
+      <label>
+        Name:
+        <input
+          type='text'
+          name='name'
+          value={user.name}
+          onChange={handleOnChangeInput}
+          required
+        />
+      </label>
       <label>
         Email:
         <input

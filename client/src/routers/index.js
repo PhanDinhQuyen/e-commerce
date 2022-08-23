@@ -1,4 +1,4 @@
-import { Home, Login, Product } from "~/pages";
+import { Home, Login, NotFound, Product, Register } from "~/pages";
 
 const publicRoutes = [
   {
@@ -13,6 +13,15 @@ const publicRoutes = [
   {
     path: "/products",
     page: Product,
+    layout: "default",
+  },
+  {
+    path: "/register",
+    page: Register,
+  },
+  {
+    path: "*",
+    page: NotFound,
     layout: "default",
   },
 ];

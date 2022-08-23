@@ -2,6 +2,7 @@ import { publicRoutes } from "~/routers";
 import { DefaultLayout } from "~/layouts";
 import { Routes, Route } from "react-router-dom";
 import { Fragment } from "react";
+
 function App() {
   const layoutOptions = {
     default: DefaultLayout,

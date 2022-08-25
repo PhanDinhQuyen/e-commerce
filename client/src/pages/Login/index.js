@@ -1,6 +1,5 @@
 import { useState } from "react";
 import * as httpRequest from "~/utils/httpRequest";
-
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
 
@@ -11,15 +10,14 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
 
     try {
-      await httpRequest.post("user/login", { ...user });
-      localStorage.setItem("firstLogin", true);
-
-      window.location.href = "/";
-    } catch (error) {
-      alert(error.response.data.msg);
+      const response = await httpRequest.post("/user/login", { ...user });
+      alert("Success!");
+      console.log({ response });
+    } catch (err) {
+      console.log(err);
+      alert(err.response.data.msg);
     }
   };
 

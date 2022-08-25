@@ -66,6 +66,7 @@ const userController = {
         path: "/user/refreshtoken",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
       });
+
       return res.json({ accessToken, isPasswordValid });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -73,7 +74,7 @@ const userController = {
   },
   logout: async (req, res) => {
     try {
-      res.clearCookie("refreshToken", { path: "/user/refreshToken" });
+      res.clearCookie("refreshtoken", { path: "/user/refreshtoken" });
       return res.json({ msg: "Logout successful." });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -107,12 +108,12 @@ const userController = {
   },
   refreshToken: (req, res) => {
     try {
-      const refreshtoken = req.cookies.refreshtoken;
-      if (!refreshtoken)
+      const refreshToken = req.cookies.refreshtoken;
+      if (!refreshToken)
         return res.status(400).json({ msg: "Please Login or Register" });
 
       jwt.verify(
-        refreshtoken,
+        refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, user) => {
           if (err)

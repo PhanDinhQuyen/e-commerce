@@ -25,7 +25,12 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(
   fileUpload({
@@ -39,6 +44,14 @@ app.use("/user", userRouter);
 app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
 app.use("/api", productRouter);
+app.get("/cookie", (req, res) => {
+  res.cookie("refreshtoken", "refreshToken", {
+    httpOnly: true,
+    path: "/cookie",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+  });
+  res.send("Oke");
+});
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;
 mongoose.connect(
@@ -53,7 +66,7 @@ mongoose.connect(
 );
 
 //Start server
-const PORT = process.env.PORT || 3401;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

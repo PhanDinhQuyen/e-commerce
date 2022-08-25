@@ -1,18 +1,24 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ProductAPI } from "~/api";
+import * as httpRequest from "~/utils/httpRequest";
+import axios from "axios";
 export const GlobalState = createContext();
 
-function DataProvider({ children }) {
+const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
-  const stateGlobal = {
+  useEffect(() => {
+    (async () => {
+      const response = await httpRequest.get("/user/refreshtoken");
+
+      console.log(response);
+    })();
+  }, []);
+  const state = {
     token: [token, setToken],
     productsAPI: ProductAPI(),
   };
 
-  ProductAPI();
-  return (
-    <GlobalState.Provider value={stateGlobal}>{children}</GlobalState.Provider>
-  );
-}
+  return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
+};
 
 export default DataProvider;

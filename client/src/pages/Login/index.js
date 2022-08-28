@@ -12,12 +12,13 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await httpRequest.post("/user/login", { ...user });
-      alert("Success!");
-      console.log({ response });
-    } catch (err) {
-      console.log(err);
-      alert(err.response.data.msg);
+      await httpRequest.post("/user/login", { ...user });
+
+      localStorage.setItem("userLogin", true);
+
+      window.location.href = "/";
+    } catch (error) {
+      alert(error.response.data.msg);
     }
   };
 

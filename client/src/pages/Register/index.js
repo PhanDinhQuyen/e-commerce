@@ -11,12 +11,11 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
 
     try {
       await httpRequest.post("user/register", { ...user });
-      localStorage.setItem("firstLogin", true);
-      alert("User registration successful");
+
+      localStorage.setItem("userLogin", true);
       window.location.href = "/";
     } catch (error) {
       alert(error.response.data.msg);

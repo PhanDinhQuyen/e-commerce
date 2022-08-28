@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.CLIENT_URL,
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -44,14 +44,7 @@ app.use("/user", userRouter);
 app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
 app.use("/api", productRouter);
-app.get("/cookie", (req, res) => {
-  res.cookie("refreshtoken", "refreshToken", {
-    httpOnly: true,
-    path: "/cookie",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-  });
-  res.send("Oke");
-});
+
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;
 mongoose.connect(

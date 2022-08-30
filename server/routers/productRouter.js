@@ -3,6 +3,7 @@ const { authorizationUser, authorizationAdmin } = require("../middleware");
 const { productController } = require("../controllers");
 
 router.route("/products").get(productController.getProducts);
+
 router.post(
   "/product",
   authorizationUser,

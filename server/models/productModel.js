@@ -13,6 +13,11 @@ const productSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    lower_title: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     price: {
       type: Number,
       trim: true,

@@ -9,12 +9,12 @@ class APIFeatures {
   filtering() {
     // console.log({ query: this.query, queryString: this.queryString });
     const queryObject = { ...this.queryString };
-    // console.log(queryObject);
 
     const excludedFields = ["sort", "page", "limit"];
     excludedFields.forEach(
       (excludedField) => delete queryObject[excludedField]
     );
+
     // console.log(queryObject);
     const regex = /\b(gte|gt|lt|lte|regex)\b/g;
     //gte = greater than or equal
@@ -25,8 +25,7 @@ class APIFeatures {
       regex,
       (match) => "$" + match
     );
-    console.log({ queryStringify, queryObject });
-    console.log(JSON.parse(queryStringify));
+    // console.log(JSON.parse(queryStringify));
 
     this.query.find(JSON.parse(queryStringify));
     return this;
@@ -67,7 +66,7 @@ const productController = {
         checked,
         sold,
       } = req.body;
-
+      const lower_title = title.toLowerCase();
       if (!image) return res.status(400).json({ msg: "No image available!" });
 
       const product = await Product.findOne({ product_id });
@@ -84,6 +83,7 @@ const productController = {
         category,
         checked,
         sold,
+        lower_title,
       });
       await newProduct.save();
 
@@ -94,11 +94,14 @@ const productController = {
   },
   getProducts: async (req, res) => {
     try {
-      const features = new APIFeatures(Product.find(), req.query)
+      const features = new APIFeatures(
+        Product.find().select(`-lower_title`),
+        req.query
+      )
         .filtering()
         .sorting()
         .paginating();
-
+      console.log(req.query);
       const products = await features.query;
       return res.status(200).json({
         products,
@@ -121,12 +124,14 @@ const productController = {
         checked,
         sold,
       } = req.body;
+      const lower_title = title.toLowerCase();
+
       if (!image) return res.status(400).json({ msg: "No image available!" });
 
       await Product.findByIdAndUpdate(
         { _id: product_id },
         {
-          title: title.toLowerCase(),
+          title: title,
           price,
           description,
           content,
@@ -134,6 +139,7 @@ const productController = {
           category,
           checked,
           sold,
+          lower_title,
         }
       );
       return res.status(200).json({ msg: "Product updated successfully" });
@@ -149,6 +155,7 @@ const productController = {
       return res.status(500).json({ error: err });
     }
   },
+  searchProduct: async (req, res) => {},
 };
 
 module.exports = productController;

@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+  // position: relative;
+  width: var(--width-default);
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 6rem;
+  // flex-direction: column;
+  justify-content: space-between;
+  padding: 0 2rem;
+}

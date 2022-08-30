@@ -7,6 +7,7 @@ export default function UserAPI(token) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    if (!token) return;
     const getUser = async () => {
       try {
         const response = await httpRequest.get("/user/infor", {

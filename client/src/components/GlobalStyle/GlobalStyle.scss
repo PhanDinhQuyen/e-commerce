@@ -7,6 +7,8 @@
   --font-family-default: "Poppins", sans-serif;
   --white: #fff;
   --black: #000;
+  --width-default: 1150px;
+  --height-header-default: 60px;
 }
 
 *,
@@ -27,9 +29,21 @@ body {
   font-family: var(--font-family-default);
   line-height: 1.5;
   color: var(--black);
-  background-color: var(--white);
+  background-color: #d8e0e4;
 }
 
 a[href] {
   text-decoration: none;
+}
+ul {
+  list-style: none;
+}
+button {
+  outline: none;
+  border: none;
+}
+input {
+  outline: none;
+  border: none;
+  font-family: var(--font-family-default);
 }

@@ -44,7 +44,7 @@
   flex-direction: column;
   max-height: 50rem;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: overlay;
   li {
     display: flex;
     padding: 1rem;

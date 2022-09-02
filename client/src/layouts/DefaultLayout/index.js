@@ -10,7 +10,7 @@ export default function DefaultLayout({ children }) {
       <Header />
       <div className={cx("wrapper")}>
         <SideBar />
-        {children}
+        <div className={cx("container")}>{children}</div>
       </div>
       <Footer />
     </Fragment>

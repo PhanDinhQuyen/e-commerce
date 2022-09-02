@@ -13,10 +13,10 @@ const cx = classNames.bind(style);
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
-
+  const [showProducts, setShowProducts] = useState(false);
   const debounceValue = useDebounce(searchTerm, 1000);
-
   useEffect(() => {
+    if (debounceValue.length === 0) setProducts([]);
     if (!debounceValue.trim()) return;
     (async () => {
       try {
@@ -33,37 +33,44 @@ export default function Search() {
   }, [debounceValue]);
 
   const handleOnChangeInput = (e) => {
-    setProducts([]);
+    // setProducts([]);
     const value = e.target.value;
     if (value.startsWith(" ")) return;
     setSearchTerm(value);
+  };
+
+  const handleShowListProducts = () => {
+    setShowProducts(true);
+  };
+  const handleHideListProducts = () => {
+    setShowProducts(false);
   };
   return (
     <div className={cx("wrapper-tippy")}>
       <Tippy
         interactive
         placement='bottom'
-        visible={products.length > 0}
-        render={(attrs) => (
-          <ul className={cx("list-products")} tabIndex='-1' {...attrs}>
-            {products.map((product) => (
-              <li key={product._id}>
-                <img src={product.image.url} width='50' height='50' alt='' />
-                <div className={cx("product-detail")}>
-                  <p>{product.title}</p>
-                  <div className={cx("product-describe")}>
-                    <p>Price: {product.price}$</p>
-                    <input
-                      type='checkbox'
-                      defaultChecked={!product.checked}
-                      interactive='false'
-                    />
+        onClickOutside={handleHideListProducts}
+        visible={showProducts}
+        render={(attrs) =>
+          products.length === 0 && debounceValue.length > 0 ? (
+            <p>Products not found</p>
+          ) : (
+            <ul className={cx("list-products")} tabIndex='-1' {...attrs}>
+              {products.map((product) => (
+                <li key={product._id}>
+                  <img src={product.image.url} width='50' height='50' alt='' />
+                  <div className={cx("product-detail")}>
+                    <p>{product.title}</p>
+                    <div className={cx("product-describe")}>
+                      <p>Price: {product.price}$</p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                </li>
+              ))}
+            </ul>
+          )
+        }
       >
         <div className={cx("search")}>
           <button>
@@ -75,6 +82,7 @@ export default function Search() {
             placeholder='Search product...'
             value={searchTerm}
             onChange={handleOnChangeInput}
+            onFocus={handleShowListProducts}
           />
         </div>
       </Tippy>

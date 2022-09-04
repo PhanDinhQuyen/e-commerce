@@ -17,8 +17,6 @@ export default function UserAPI(token) {
         setIsAdmin(
           response.data.role === Number(process.env.REACT_APP_ROLE_ADMIN)
         );
-        console.log(process.env.REACT_APP_ROLE_ADMIN);
-        console.log(response);
       } catch (error) {
         console.log(error.response.data.msg);
       }

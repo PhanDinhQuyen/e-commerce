@@ -15,4 +15,10 @@
   background-color: #fff;
   margin-top: 2rem;
   height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 200px;
+  min-height: 50vh;
+  flex-direction: column;
 }

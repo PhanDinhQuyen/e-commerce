@@ -1,5 +1,14 @@
 import { useState } from "react";
 import * as httpRequest from "~/utils/httpRequest";
+
+import { Link } from "react-router-dom";
+
+import classNames from "classnames/bind";
+
+import style from "./Login.module.scss";
+
+const cx = classNames.bind(style);
+
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
 
@@ -23,29 +32,46 @@ export default function Login() {
   };
 
   return (
-    <form>
-      <h2>Login</h2>
-      <label>
-        Email:
-        <input
-          type='text'
-          name='email'
-          value={user.email}
-          onChange={handleOnChangeInput}
-          required
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type='text'
-          name='password'
-          value={user.password}
-          onChange={handleOnChangeInput}
-          required
-        />
-      </label>
-      <button onClick={handleSubmit}>Submit</button>
-    </form>
+    <div className={cx("wrapper")}>
+      <form>
+        <h2>Login</h2>
+        <div className={cx("form-group")}>
+          <p>
+            Email<span>*</span>:
+          </p>
+          <input
+            type='email'
+            name='email'
+            value={user.email}
+            placeholder='Enter your email address...'
+            onChange={handleOnChangeInput}
+            required
+          />
+        </div>
+        <div className={cx("form-group")}>
+          <p>
+            Password<span>*</span>:
+          </p>
+          <input
+            type='password'
+            name='password'
+            placeholder='Enter your password...'
+            value={user.password}
+            onChange={handleOnChangeInput}
+            required
+          />
+        </div>
+
+        <button className={cx("submit-btn")} onClick={handleSubmit}>
+          Submit
+        </button>
+        <p>
+          Not a member?{" "}
+          <Link className={cx("primary-link")} to='/register'>
+            Sign up
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 }

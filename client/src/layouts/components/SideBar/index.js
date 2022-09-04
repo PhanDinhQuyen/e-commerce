@@ -7,14 +7,18 @@ import { AiOutlineHome } from "react-icons/ai";
 
 import { Link } from "react-router-dom";
 
+import { useContext } from "react";
+
+import { GlobalState } from "~/components";
 const cx = classNames.bind(style);
 
 export default function SideBar() {
+  const state = useContext(GlobalState);
+  const [isLogged] = state.userAPI.isLogged;
   const listActions = [
     { name: "Home", icon: <AiOutlineHome />, path: "/" },
     { name: "About", icon: <AiOutlineHome />, path: "/about" },
     { name: "Products", icon: <AiOutlineHome />, path: "/products" },
-    { name: "Login/Register", icon: <AiOutlineHome />, path: "/login" },
     { name: "Contact", icon: <AiOutlineHome /> },
   ];
   const listLinks = [
@@ -24,9 +28,9 @@ export default function SideBar() {
     { name: "Link", url: "" },
     { name: "Intagram", url: "" },
   ];
-  console.log(window.location.pathname);
+  // console.log(window.location.pathname);
   return (
-    <div>
+    <div className={cx("wrapper")}>
       <ul className={cx("list-menu")}>
         {listActions.map((item, index) => (
           <li
@@ -38,6 +42,14 @@ export default function SideBar() {
             </Link>
           </li>
         ))}
+        {!isLogged && (
+          <li>
+            <Link to='/login'>
+              <AiOutlineHome />
+              <span>Login/Register</span>
+            </Link>
+          </li>
+        )}
       </ul>
       <ul className={cx("list-link")}>
         {listLinks.map((link, index) => (

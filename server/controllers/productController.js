@@ -105,7 +105,6 @@ const productController = {
       const products = await features.query;
       return res.status(200).json({
         products,
-        totalProducts: products.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err });

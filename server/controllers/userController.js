@@ -54,6 +54,7 @@ const userController = {
           .json({ msg: "Please check your email address and try again." });
       //Check password
       const isPasswordValid = await bcrypt.compare(password, user.password);
+
       if (!isPasswordValid)
         return res
           .status(400)

@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi";
 import Tippy from "@tippyjs/react/headless";
 import { useEffect, useState } from "react";
 import httpRequest from "~/utils/httpRequest";
-
+import Loading from "~/components/Loading";
 import useDebounce from "~/hooks/useDebounce ";
 
 const cx = classNames.bind(style);
@@ -14,10 +14,12 @@ export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [showProducts, setShowProducts] = useState(false);
+  const [loading, setLoading] = useState(false);
   const debounceValue = useDebounce(searchTerm, 1000);
   useEffect(() => {
     if (debounceValue.length === 0) setProducts([]);
     if (!debounceValue.trim()) return;
+    setLoading(true);
     (async () => {
       try {
         const response = await httpRequest.get(
@@ -26,7 +28,9 @@ export default function Search() {
           )}`
         );
         setProducts(response.data.products);
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         throw new Error(e.response.data.msg);
       }
     })();
@@ -53,7 +57,9 @@ export default function Search() {
         onClickOutside={handleHideListProducts}
         visible={showProducts}
         render={(attrs) =>
-          products.length === 0 && debounceValue.length > 0 ? (
+          loading ? (
+            <Loading />
+          ) : products.length === 0 && debounceValue.length > 0 ? (
             <p>Products not found</p>
           ) : (
             <ul className={cx("list-products")} tabIndex='-1' {...attrs}>

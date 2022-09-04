@@ -63,3 +63,7 @@ input {
   border: none;
   font-family: var(--font-family-default);
 }
+#root {
+  min-height: 100vh;
+  position: relative;
+}

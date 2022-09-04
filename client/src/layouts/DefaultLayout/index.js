@@ -1,4 +1,4 @@
-import { Header, Footer, SideBar } from "../components";
+import { Header, SideBar } from "../components";
 import { Fragment } from "react";
 import classNames from "classnames/bind";
 import style from "./Layout.module.scss";
@@ -12,7 +12,6 @@ export default function DefaultLayout({ children }) {
         <SideBar />
         <div className={cx("container")}>{children}</div>
       </div>
-      <Footer />
     </Fragment>
   );
 }

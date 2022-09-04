@@ -43,3 +43,12 @@
     transform: rotate(360deg);
   }
 }
+
+.wrapper-select {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.select {
+  margin: 1rem;
+}

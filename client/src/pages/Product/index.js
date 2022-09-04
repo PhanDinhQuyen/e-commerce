@@ -6,6 +6,7 @@ import style from "./Product.module.scss";
 import { useState } from "react";
 import httpRequest from "~/utils/httpRequest";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(style);
 
@@ -21,7 +22,7 @@ export default function Product() {
     async function fetchDataProduct() {
       try {
         const res = await httpRequest.get(
-          `/api/products?sort=${valueOption}&page=${page}&limit=9`
+          `/api/products?sort=${valueOption}&page=${page}`
         );
         setProducts(res.data.products);
         setLoading(false);
@@ -39,21 +40,15 @@ export default function Product() {
   };
   // console.log(products);
   const renderProducts = () => (
-    <>
-      <select onChange={handleOnChangeSelect} value={valueOption}>
-        <option value=''>New</option>
-        <option value='-updatedAt'>Old</option>
-        <option value='price'>Price</option>
-        <option value='-price'>-Price</option>
-      </select>
-      <div className={cx("wrapper")}>
-        {products.map((product) => {
-          const description = product.description
-            .split(" ")
-            .slice(0, 8)
-            .join(" ");
-          return (
-            <div key={product._id} className={cx("wrapper-image")}>
+    <div className={cx("wrapper")}>
+      {products.map((product) => {
+        const description = product.description
+          .split(" ")
+          .slice(0, 8)
+          .join(" ");
+        return (
+          <Link key={product._id} to={`/detail/${product._id}`}>
+            <div className={cx("wrapper-image")}>
               <img
                 key={product._id}
                 src={product.image.url}
@@ -64,9 +59,28 @@ export default function Product() {
               <p>{description} ...</p>
               <span className={cx("price")}>Price: ${product.price}</span>
             </div>
-          );
-        })}
+          </Link>
+        );
+      })}
+    </div>
+  );
+  return (
+    <>
+      <div className={cx("wrapper-select")}>
+        <select
+          className={cx("select")}
+          onChange={handleOnChangeSelect}
+          value={valueOption}
+        >
+          <option value='createdAt'>New</option>
+          <option value='-createdAt'>Old</option>
+          <option value='price'>Price</option>
+          <option value='-price'>-Price</option>
+        </select>
       </div>
+
+      {!loading ? renderProducts() : <Loading />}
+
       <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
         <button
           onClick={() => {
@@ -83,12 +97,11 @@ export default function Product() {
             setPage(page + 1);
             window.scrollTo(0, 0);
           }}
-          disabled={products.length !== 9}
+          disabled={products.length !== 8}
         >
           Next
         </button>
       </div>
     </>
   );
-  return !loading ? renderProducts() : <Loading />;
 }

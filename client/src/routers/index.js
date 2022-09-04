@@ -1,4 +1,11 @@
-import { Home, Login, NotFound, Product, Register } from "~/pages";
+import {
+  Home,
+  Login,
+  NotFound,
+  Product,
+  Register,
+  DetailProduct,
+} from "~/pages";
 
 const publicRoutes = [
   {
@@ -18,6 +25,11 @@ const publicRoutes = [
   {
     path: "/register",
     page: Register,
+  },
+  {
+    path: "/detail/:id",
+    page: DetailProduct,
+    layout: "headerOnly",
   },
   {
     path: "*",

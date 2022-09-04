@@ -1,0 +1,16 @@
+import { Header, SideBar } from "../components";
+import { Fragment } from "react";
+import classNames from "classnames/bind";
+import style from "./HeaderOnly.module.scss";
+
+const cx = classNames.bind(style);
+export default function HeaderOnly({ children }) {
+  return (
+    <Fragment>
+      <Header />
+      <div className={cx("wrapper")}>
+        <div className={cx("container")}>{children}</div>
+      </div>
+    </Fragment>
+  );
+}

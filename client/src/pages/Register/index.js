@@ -70,6 +70,7 @@ export default function Register() {
             placeholder='Enter your password...'
             value={user.password}
             onChange={handleOnChangeInput}
+            autoComplete='current-password'
             required
           />
         </div>

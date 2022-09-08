@@ -75,7 +75,7 @@ const productController = {
 
       const newProduct = new Product({
         product_id,
-        title: title.toLowerCase(),
+        title,
         price,
         description,
         content,
@@ -154,7 +154,6 @@ const productController = {
       return res.status(500).json({ error: err });
     }
   },
-  searchProduct: async (req, res) => {},
 };
 
 module.exports = productController;

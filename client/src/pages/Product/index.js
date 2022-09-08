@@ -12,17 +12,25 @@ const cx = classNames.bind(style);
 
 export default function Product() {
   const state = useContext(GlobalState);
-  const [products, setProducts] = state.productsAPI.products;
 
-  const [valueOption, setValueOption] = useState("");
-  const [page, setPage] = useState(1);
+  const [products, setProducts] = state.productsAPI.products;
+  const [valueOption, setValueOption] = useState(
+    localStorage.getItem("product") || "createAt"
+  );
+
+  const [page, setPage] = useState(+localStorage.getItem("page") || 1);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    window.scrollTo(0, localStorage.getItem("py") || 0);
     setLoading(true);
+    localStorage.setItem("page", page);
+    localStorage.setItem("product", valueOption);
     async function fetchDataProduct() {
       try {
         const res = await httpRequest.get(
-          `/api/products?sort=${valueOption}&page=${page}`
+          `/api/products?sort=${valueOption}&page=${localStorage.getItem(
+            "page"
+          )}`
         );
         setProducts(res.data.products);
         setLoading(false);
@@ -47,7 +55,13 @@ export default function Product() {
           .slice(0, 8)
           .join(" ");
         return (
-          <Link key={product._id} to={`/detail/${product._id}`}>
+          <Link
+            onClick={() => {
+              localStorage.setItem("py", window.pageYOffset);
+            }}
+            key={product._id}
+            to={`/detail/${product._id}`}
+          >
             <div className={cx("wrapper-image")}>
               <img
                 key={product._id}
@@ -84,17 +98,17 @@ export default function Product() {
       <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
         <button
           onClick={() => {
-            setPage(page - 1);
+            setPage((pre) => pre - 1);
             window.scrollTo(0, 0);
           }}
-          disabled={page === 1}
+          disabled={+page === 1}
         >
           Pre
         </button>
         <span>{page}</span>
         <button
           onClick={() => {
-            setPage(page + 1);
+            setPage(+page + 1);
             window.scrollTo(0, 0);
           }}
           disabled={products.length !== 8}

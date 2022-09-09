@@ -8,6 +8,8 @@ import httpRequest from "~/utils/httpRequest";
 import Loading from "~/components/Loading";
 import useDebounce from "~/hooks/useDebounce ";
 
+import { Link } from "react-router-dom";
+
 const cx = classNames.bind(style);
 
 export default function Search() {
@@ -28,6 +30,10 @@ export default function Search() {
           )}`
         );
         setProducts(response.data.products);
+        localStorage.setItem(
+          "productsFind",
+          JSON.stringify(response.data.products)
+        );
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -65,13 +71,23 @@ export default function Search() {
             <ul className={cx("list-products")} tabIndex='-1' {...attrs}>
               {products.map((product) => (
                 <li key={product._id}>
-                  <img src={product.image.url} width='50' height='50' alt='' />
-                  <div className={cx("product-detail")}>
-                    <p>{product.title}</p>
-                    <div className={cx("product-describe")}>
-                      <p>Price: {product.price}$</p>
+                  <Link
+                    onClick={() => setShowProducts(false)}
+                    to={`/detail/${product._id}`}
+                  >
+                    <img
+                      src={product.image.url}
+                      width='50'
+                      height='50'
+                      alt=''
+                    />
+                    <div className={cx("product-detail")}>
+                      <p>{product.title}</p>
+                      <div className={cx("product-describe")}>
+                        <p>Price: {product.price}$</p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>

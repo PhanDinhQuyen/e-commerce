@@ -38,7 +38,7 @@ export default function SideBar() {
     if (localStorage.getItem("currentPathName") !== "/products") {
       localStorage.removeItem("product");
       localStorage.removeItem("page");
-      localStorage.removeItem("py");
+      localStorage.removeItem("positionY");
       window.scrollTo(0, 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

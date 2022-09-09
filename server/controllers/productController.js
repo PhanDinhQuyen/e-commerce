@@ -83,7 +83,7 @@ const productController = {
         category,
         checked,
         sold,
-        lower_title,
+        lower_title: title.toLowerCase(),
       });
       await newProduct.save();
 

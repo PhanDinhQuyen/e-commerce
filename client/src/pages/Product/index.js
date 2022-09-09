@@ -1,63 +1,74 @@
-import { useContext } from "react";
-import { GlobalState } from "~/components";
-import classNames from "classnames/bind";
-import Loading from "~/components/Loading";
-import style from "./Product.module.scss";
-import { useState } from "react";
-import httpRequest from "~/utils/httpRequest";
-import { useEffect } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+
+import { GlobalState } from "~/components";
+import Loading from "~/components/Loading";
+import httpRequest from "~/utils/httpRequest";
+
+import style from "./Product.module.scss";
+import classNames from "classnames/bind";
 
 const cx = classNames.bind(style);
 
 export default function Product() {
   const state = useContext(GlobalState);
-
   const [products, setProducts] = state.productsAPI.products;
+
   const [valueOption, setValueOption] = useState(
     localStorage.getItem("product") || "createAt"
   );
 
-  const [page, setPage] = useState(+localStorage.getItem("page") || 1);
+  const [page, setPage] = useState(
+    JSON.parse(localStorage.getItem("page")) || 1
+  );
+
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    window.scrollTo(0, localStorage.getItem("py") || 0);
+    window.scrollTo(0, localStorage.getItem("positionY") || 0);
+
     setLoading(true);
+
     localStorage.setItem("page", page);
     localStorage.setItem("product", valueOption);
-    async function fetchDataProduct() {
+
+    (async function () {
       try {
         const res = await httpRequest.get(
-          `/api/products?sort=${valueOption}&page=${localStorage.getItem(
-            "page"
-          )}`
+          `/api/products?sort=${valueOption}&page=${page}`
         );
+
         setProducts(res.data.products);
         setLoading(false);
       } catch (err) {
         setLoading(false);
+
         throw new Error(err);
       }
-    }
-    fetchDataProduct();
+    })();
   }, [setProducts, valueOption, page]);
   const handleOnChangeSelect = (e) => {
-    // console.log(e.target.value);
     setValueOption(e.target.value);
     setPage(1);
   };
-  // console.log(products);
+
+  const handlePrePage = () => {
+    setPage((page) => page - 1);
+    window.scrollTo(0, 0);
+    console.log(page);
+  };
+  const handleNextPage = () => {
+    setPage((page) => page + 1);
+    window.scrollTo(0, 0);
+  };
   const renderProducts = () => (
     <div className={cx("wrapper")}>
-      {products.map((product) => {
-        const description = product.description
-          .split(" ")
-          .slice(0, 8)
-          .join(" ");
+      {products.slice(0, 8).map((product) => {
+        const description = product.description.slice(0, 40);
         return (
           <Link
             onClick={() => {
-              localStorage.setItem("py", window.pageYOffset);
+              localStorage.setItem("positionY", window.pageYOffset);
             }}
             key={product._id}
             to={`/detail/${product._id}`}
@@ -70,7 +81,7 @@ export default function Product() {
                 alt=''
               />
               <h3>{product.title}</h3>
-              <p>{description} ...</p>
+              <p>{description}...</p>
               <span className={cx("price")}>Price: ${product.price}</span>
             </div>
           </Link>
@@ -96,23 +107,11 @@ export default function Product() {
       {!loading ? renderProducts() : <Loading />}
 
       <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
-        <button
-          onClick={() => {
-            setPage((pre) => pre - 1);
-            window.scrollTo(0, 0);
-          }}
-          disabled={+page === 1}
-        >
+        <button disabled={page <= 1} onClick={handlePrePage}>
           Pre
         </button>
         <span>{page}</span>
-        <button
-          onClick={() => {
-            setPage(+page + 1);
-            window.scrollTo(0, 0);
-          }}
-          disabled={products.length !== 8}
-        >
+        <button disabled={products.length !== 8} onClick={handleNextPage}>
           Next
         </button>
       </div>

@@ -7,15 +7,15 @@ const mongoose = require("mongoose");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const { faker } = require("@faker-js/faker");
-const { Product } = require("./models");
+// const { faker } = require("@faker-js/faker");
+// const { Product } = require("./models");
 
 const {
   categoryRouter,
   userRouter,
   uploadRouter,
   productRouter,
-} = require("./routers");
+} = require("./src/routers");
 
 const app = express();
 //Middleware
@@ -47,30 +47,30 @@ app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
 app.use("/api", productRouter);
 
-app.get("/createdata", async (req, res, next) => {
-  for (let i = 0; i < 50; i++) {
-    try {
-      const title = faker.commerce.productName();
-      const newProduct = new Product({
-        product_id: faker.random.alphaNumeric(5),
-        title: title,
-        price: Number(faker.commerce.price(1, 200)),
-        description: faker.commerce.productDescription(),
-        content: faker.lorem.lines(3),
-        image: {
-          url: `${faker.image.nature()}?random=${Date.now()}`,
-        },
-        category: faker.commerce.department(),
-        sold: Number(faker.random.numeric()),
-        lower_title: title.toLowerCase(),
-      });
-      newProduct.save();
-      res.redirect("/api/products");
-    } catch (e) {
-      console.log(e);
-    }
-  }
-});
+// app.get("/createdata", async (req, res, next) => {
+//   for (let i = 0; i < 50; i++) {
+//     try {
+//       const title = faker.commerce.productName();
+//       const newProduct = new Product({
+//         product_id: faker.random.alphaNumeric(5),
+//         title: title,
+//         price: Number(faker.commerce.price(1, 200)),
+//         description: faker.commerce.productDescription(),
+//         content: faker.lorem.lines(3),
+//         image: {
+//           url: `${faker.image.nature()}?random=${Date.now()}`,
+//         },
+//         category: faker.commerce.department(),
+//         sold: Number(faker.random.numeric()),
+//         lower_title: title.toLowerCase(),
+//       });
+//       newProduct.save();
+//       res.redirect("/api/products");
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }
+// });
 
 //Connet to Mongoose
 const URI = process.env.MONGODB_CONNECTION_URL;

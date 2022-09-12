@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import { GlobalStyle } from "./components";
 import { BrowserRouter as Router } from "react-router-dom";
+
+import GlobalStyle from "./components/GlobalStyle";
+import DataProvider from "./components/GlobalState";
+
 import App from "./App";
-import { DataProvider } from "./components";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

@@ -1,56 +1,36 @@
-import {
-  Home,
-  Login,
-  NotFound,
-  Product,
-  Register,
-  DetailProduct,
-  Management,
-} from "~/pages";
+import { Home, Register, Login, DetailProduct, Manage, Cart } from "~/pages";
 
-const publicRoutes = [
+const publicRouters = [
   {
     path: "/",
     page: Home,
     layout: "default",
-    isAdmin: false,
+  },
+  {
+    path: "/product/detail/:id",
+    page: DetailProduct,
+    layout: "default",
+  },
+  {
+    path: "/user/cart",
+    page: Cart,
+    layout: "default",
   },
   {
     path: "/login",
     page: Login,
-    isAdmin: false,
-  },
-  {
-    path: "/products",
-    page: Product,
-    layout: "default",
-    isAdmin: false,
   },
   {
     path: "/register",
     page: Register,
-    isAdmin: false,
-  },
-  {
-    path: "/detail/:id",
-    page: DetailProduct,
-    layout: "headerOnly",
-    isAdmin: false,
-  },
-  {
-    path: "*",
-    page: NotFound,
-    layout: "default",
-    isAdmin: false,
-  },
-  {
-    path: "/admin/manager",
-    page: Management,
-    layout: "headerOnly",
-    isAdmin: true,
   },
 ];
 
-const privateRoutes = [];
-
-export { privateRoutes, publicRoutes };
+const praviteRouters = [
+  {
+    path: "/admin/manage",
+    page: Manage,
+    layout: "default",
+  },
+];
+export { publicRouters, praviteRouters };

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpRequest = axios.create({
-  baseURL: process.env.REACT_APP_URI_SV,
+  baseURL: process.env.REACT_APP_URL_SV,
   withCredentials: true,
 });
 

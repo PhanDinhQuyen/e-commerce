@@ -1,47 +1,54 @@
-import { publicRoutes } from "~/routers";
-import { DefaultLayout, HeaderOnly } from "~/layouts";
+import { useContext, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Fragment } from "react";
 
-import { GlobalState } from "./components";
-import { useContext } from "react";
+import { praviteRouters, publicRouters } from "./routers";
 
-function App() {
+import { GlobalState } from "./components/GlobalState";
+
+import DefaultLayout from "./layouts";
+
+export default function App() {
+  const state = useContext(GlobalState);
+  const [isAdmin] = state.user.login;
+
   const layoutOptions = {
     default: DefaultLayout,
-    headerOnly: HeaderOnly,
   };
-
-  const state = useContext(GlobalState);
-  const [isAdminState] = state.userAPI.isAdmin;
   return (
     <Routes>
-      {publicRoutes.map((item) => {
-        const { page, path, layout } = item;
-        let isAdmin = item.isAdmin;
-
-        if (isAdmin && isAdminState) {
-          isAdmin = false;
-        }
-        const Page = page;
-        const Layout = layoutOptions[layout] || Fragment;
-
+      {publicRouters.map((router) => {
+        const Page = router.page;
+        const Layout = layoutOptions[router.layout] || Fragment;
         return (
-          !isAdmin && (
+          <Route
+            key={router.path}
+            path={router.path}
+            element={
+              <Layout>
+                <Page />
+              </Layout>
+            }
+          ></Route>
+        );
+      })}
+
+      {isAdmin &&
+        praviteRouters.map((router) => {
+          const Page = router.page;
+          const Layout = layoutOptions[router.layout] || Fragment;
+
+          return (
             <Route
-              key={path}
-              path={path}
+              key={router.path}
+              path={router.path}
               element={
                 <Layout>
                   <Page />
                 </Layout>
               }
-            />
-          )
-        );
-      })}
+            ></Route>
+          );
+        })}
     </Routes>
   );
 }
-
-export default App;

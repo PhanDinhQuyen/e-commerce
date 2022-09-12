@@ -2,14 +2,10 @@ const router = require("express").Router();
 const { authorizationUser, authorizationAdmin } = require("../middleware");
 const { productController } = require("../controllers");
 
-router.route("/products").get(productController.getProducts);
-
-router.post(
-  "/product",
-  authorizationUser,
-  authorizationAdmin,
-  productController.createProduct
-);
+router
+  .route("/product")
+  .post(authorizationUser, authorizationAdmin, productController.createProduct)
+  .get(productController.getProducts);
 
 router
   .route("/product/:id")

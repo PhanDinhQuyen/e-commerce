@@ -1,28 +1,33 @@
-import { createContext, useEffect, useState } from "react";
-import { ProductAPI, UserAPI } from "~/api";
+import { useState, useEffect, createContext } from "react";
+
+import ProductAPI from "~/apis/productAPI";
+import UserAPI from "~/apis/userAPI";
+
 import * as httpRequest from "~/utils/httpRequest";
+
 export const GlobalState = createContext();
 
-const DataProvider = ({ children }) => {
+export default function DataProvider({ children }) {
   const [token, setToken] = useState(null);
-  const refreshToken = async () => {
-    const token = await httpRequest.get("/user/refreshtoken");
-
-    setToken(token.accessToken);
-  };
 
   useEffect(() => {
     const userLogin = localStorage.getItem("userLogin");
-    if (userLogin) refreshToken();
+    if (userLogin) {
+      //Refresh token
+      (async () => {
+        const token = await httpRequest.get("/user/refreshtoken");
+
+        setToken(token.accessToken);
+      })();
+    }
+    //
   }, []);
 
   const state = {
     token: [token, setToken],
-    productsAPI: ProductAPI(),
-    userAPI: UserAPI(token),
+    products: ProductAPI(),
+    user: UserAPI({ token }),
   };
 
   return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
-};
-
-export default DataProvider;
+}

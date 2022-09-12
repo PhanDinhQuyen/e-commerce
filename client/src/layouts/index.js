@@ -1,2 +1,10 @@
-export { default as DefaultLayout } from "./DefaultLayout";
-export { default as HeaderOnly } from "./HeaderOnly";
+import Header from "./components/Header";
+
+export default function DefaultLayout({ children }) {
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
+}

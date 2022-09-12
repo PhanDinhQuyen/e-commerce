@@ -1,60 +1,136 @@
 .wrapper {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 500px;
-  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
+  background-image: url("../../static/images/background_login.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.logo {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 3rem;
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding: 0 2rem;
-      height: auto;
-      gap: 0.5rem;
-      p {
-        padding-left: 1rem;
-        span {
-          color: red;
-        }
-      }
-      input {
-        font-size: 1.6rem;
-        padding: 1rem 1.5rem;
-        border-radius: 2rem;
-      }
-    }
+  top: 8%;
+  left: 8%;
+  transform: translate(-50%, -50%);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  padding: 8rem 4rem;
+  border-top-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  user-select: none;
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 1rem;
+  background-color: var(--white);
+}
+
+.form_title {
+  font-family: "Monoton", cursive;
+  letter-spacing: 0.5rem;
+  font-weight: 400;
+}
+
+.form_body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: inherit;
+  position: relative;
+  label {
+    font-weight: 500;
+    padding-left: 1.5rem;
+  }
+  input {
+    padding: 1rem 1.5rem;
+    font-size: 1.4rem;
+    caret-color: red;
+    font-weight: 500;
+    color: #324;
+    letter-spacing: 0.1rem;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    width: calc(100% - 2rem);
+    height: 0.15rem;
+    background-color: rgba(51, 51, 51, 0.3);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.form_body__notify {
+  &::after {
+    background-color: red !important;
+    height: 0.15rem !important;
   }
 }
 
-.submit-btn {
+.label_notify {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: red;
+}
+
+.form_button {
+  max-width: calc(35rem - 2rem);
+  width: 100%;
   padding: 1rem 2rem;
-  width: 200px;
   border-radius: 2rem;
-  font-weight: 700;
-  font-size: 1.6rem;
-  background-color: rgba(37, 99, 235, 0.8);
-  color: var(--white);
-  transition: 100ms background-color;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fffffe;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: 300ms all linear;
+  background: rgb(0, 153, 255);
   &:hover {
-    background-color: rgba(59, 130, 246, 0.8);
+    background-color: #8ec5fc;
+    background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+    color: #ffffe2;
+  }
+  display: block;
+  text-align: center;
+}
+
+.loading {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-block;
+  border-radius: 50%;
+  border: 0.2rem solid #ffffff;
+  border-top-color: #324;
+  animation: spiner 1000ms ease-in-out infinite;
+}
+
+@keyframes spiner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-.primary-link {
-  color: rgba(37, 99, 235, 0.8) !important;
+.link_primary {
   font-weight: 500;
+  font-style: italic;
+  color: rgba(0, 153, 255, 0.5);
+  &:hover {
+    text-decoration: underline;
+    color: rgba(50, 153, 255, 1);
+  }
 }

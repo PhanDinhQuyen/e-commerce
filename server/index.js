@@ -8,7 +8,7 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 // const { faker } = require("@faker-js/faker");
-// const { Product } = require("./models");
+// const { Product } = require("./src/models");
 
 const {
   categoryRouter,
@@ -65,7 +65,7 @@ app.use("/api", productRouter);
 //         lower_title: title.toLowerCase(),
 //       });
 //       newProduct.save();
-//       res.redirect("/api/products");
+//       res.redirect("/api/product");
 //     } catch (e) {
 //       console.log(e);
 //     }

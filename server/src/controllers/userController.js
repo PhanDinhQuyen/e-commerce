@@ -36,7 +36,9 @@ const userController = {
       res.cookie("refreshtoken", refreshToken, {
         httpOnly: true,
         path: "/user/refreshtoken",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+        sameSite: "strict",
+        secure: true,
       });
 
       return res.status(200).json({ accessToken });
@@ -65,7 +67,9 @@ const userController = {
       res.cookie("refreshtoken", refreshToken, {
         httpOnly: true,
         path: "/user/refreshtoken",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: "strict",
+        secure: true,
       });
 
       return res.json({ accessToken, isPasswordValid });

@@ -8,20 +8,22 @@ import * as httpRequest from "~/utils/httpRequest";
 import errorInfor from "~/utils/errorInfor";
 
 import Toast from "~/components/Toast";
+// import { useEffect } from "react";
 
 const cx = classNames.bind(style);
 
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const toast = {
-    title: "Check your  email or password",
+  const [toast, setToast] = useState({
     type: "error",
-  };
+    title: "Check your email address",
+  });
   const emptyValue = {
     email: false,
     password: false,
   };
+
   const [isEmptyValue, setIsEmptyValue] = useState(emptyValue);
   const [loading, setLoading] = useState(false);
   const handleOnChange = (e) => {
@@ -33,7 +35,9 @@ export default function Login() {
     setUser({ ...user, [name]: value });
     setDisabledSubmit(false);
   };
-
+  const handleClickInput = () => {
+    setDisabledSubmit(false);
+  };
   const handleOnFocus = (e) => {
     e.preventDefault();
     e.target.select();
@@ -46,12 +50,20 @@ export default function Login() {
     const valuesUser = Object.values(user);
     if (!valuesUser.every((value) => Boolean(value))) {
       setLoading(false);
+      setToast({
+        type: "error",
+        title: "Check your email or password",
+      });
       for (const key in user) {
         emptyValue[key] = !Boolean(user[key]);
       }
       setIsEmptyValue(emptyValue);
       return;
     }
+    setToast({
+      type: "success",
+      title: "Login success",
+    });
     (async () => {
       try {
         await httpRequest.post("user/login", { ...user });
@@ -80,6 +92,7 @@ export default function Login() {
             )}
           </label>
           <input
+            onClick={handleClickInput}
             type='email'
             name='email'
             value={user.email}
@@ -104,6 +117,7 @@ export default function Login() {
             )}
           </label>
           <input
+            onClick={handleClickInput}
             type='password'
             name='password'
             value={user.password}

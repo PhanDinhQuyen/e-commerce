@@ -15,13 +15,17 @@ export default function DataProvider({ children }) {
     if (userLogin) {
       //Refresh token
       (async () => {
-        const token = await httpRequest.get("/user/refreshtoken");
+        try {
+          const token = await httpRequest.get("/user/refreshtoken");
 
-        setToken(token.accessToken);
+          setToken(token.accessToken);
+        } catch (error) {
+          throw new Error(error);
+        }
       })();
     }
     //
-  }, []);
+  }, [token]);
 
   const state = {
     token: [token, setToken],

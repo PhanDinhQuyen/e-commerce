@@ -9,8 +9,8 @@ import DefaultLayout from "./layouts";
 
 export default function App() {
   const state = useContext(GlobalState);
-  const [isAdmin] = state.user.login;
-
+  const [isAdmin] = state.user.admin;
+  console.log(isAdmin);
   const layoutOptions = {
     default: DefaultLayout,
   };

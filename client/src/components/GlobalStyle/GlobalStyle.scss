@@ -45,6 +45,7 @@ body {
   color: var(--black);
   width: 100vw;
   overflow-y: overlay;
+  overflow-x: hidden;
 }
 
 a {
@@ -69,7 +70,8 @@ input {
 }
 
 #root {
-  min-height: 100vh;
+  min-height: 50vh;
+  height: auto;
   position: relative;
   // overflow-x: hidden;
   width: 100vw;

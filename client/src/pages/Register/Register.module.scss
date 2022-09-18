@@ -71,6 +71,7 @@
     transform: translateX(-50%);
   }
 }
+
 .form_body__notify {
   &::after {
     background-color: red !important;
@@ -97,13 +98,18 @@
   margin-top: 2rem;
   transition: 300ms all linear;
   background: rgb(0, 153, 255);
+  display: block;
+  text-align: center;
   &:hover {
     background-color: #8ec5fc;
     background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
     color: #ffffe2;
   }
-  display: block;
-  text-align: center;
+  &:disabled {
+    background-color: #8ec5fc;
+    background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+    color: #ffffe2;
+  }
 }
 
 .loading {

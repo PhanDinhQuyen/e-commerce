@@ -1,4 +1,5 @@
 import { Home, Register, Login, DetailProduct, Manage, Cart } from "~/pages";
+import NotFound from "~/pages/NotFound";
 
 const publicRouters = [
   {
@@ -23,6 +24,11 @@ const publicRouters = [
   {
     path: "/register",
     page: Register,
+  },
+  {
+    path: "*",
+    page: Home,
+    layout: "default",
   },
 ];
 

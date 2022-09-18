@@ -1,0 +1,24 @@
+.wrapper {
+  margin: 0 auto;
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: var(--width-default);
+  padding: 0 2rem;
+}
+
+.product_img {
+  // width: 100%;
+  max-width: 48rem;
+  img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 2rem;
+  }
+}
+
+.product_description {
+  max-width: 48rem;
+}

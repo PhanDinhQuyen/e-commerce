@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import classNames from "classnames/bind";
 import style from "./Register.module.scss";
 
-import * as httpRequest from "~/utils/httpRequest";
 import errorInfor from "~/utils/errorInfor";
-import Toast from "~/components/Toast";
-// import { useCallback } from "react";
+import * as httpRequest from "~/utils/httpRequest";
+import { toastError, toastSuccess } from "~/components/Toast";
 
 const cx = classNames.bind(style);
+
 export default function Register() {
   const [user, setUser] = useState({ email: "", password: "", name: "" });
   const [disabledSubmit, setDisabledSubmit] = useState(false);
@@ -18,11 +19,6 @@ export default function Register() {
     password: false,
     name: false,
   };
-
-  const [toast, setToast] = useState({
-    title: "Check your name, email or password",
-    type: "error",
-  });
 
   const [isEmptyValue, setIsEmptyValue] = useState(emptyValue);
   const [loading, setLoading] = useState(false);
@@ -43,25 +39,21 @@ export default function Register() {
     setDisabledSubmit(true);
     if (!valuesUser.every((value) => Boolean(value))) {
       setLoading(false);
-
       for (let key in user) {
         emptyValue[key] = !Boolean(user[key]);
       }
       setIsEmptyValue(emptyValue);
-      console.log(emptyValue);
+      toastError("Please check your name, email or password!");
       return;
     }
     try {
       await httpRequest.post("user/register", { ...user });
       localStorage.setItem("userLogin", true);
+      toastSuccess("User registered successfully");
       window.location.href = "/";
     } catch (error) {
       setLoading(false);
-      const msg = error.response.data.msg;
-      setToast({
-        title: msg,
-        type: "error",
-      });
+      toastError("Please check your name, email or password!");
       errorInfor(error);
     }
   };
@@ -89,7 +81,6 @@ export default function Register() {
             id='name'
             placeholder='Enter your name'
             autoFocus={true}
-            // required
           />
         </div>
         <div
@@ -108,7 +99,6 @@ export default function Register() {
             onChange={handleOnChange}
             id='email'
             placeholder='Enter your email address'
-            // required
           />
         </div>
         <div
@@ -130,18 +120,21 @@ export default function Register() {
             onChange={handleOnChange}
             id='password'
             placeholder='Enter your password'
-            // required
           />
         </div>
-        <Toast
-          className={cx("form_button")}
-          typeBtn='submit'
-          type={toast.type}
-          title={toast.title}
-          disabled={disabledSubmit}
-        >
+        <ToastContainer
+          position='top-right'
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+        />
+        <button disabled={disabledSubmit} className={cx("form_button")}>
           {!loading ? "Sign In" : <div className={cx("loading")}></div>}
-        </Toast>
+        </button>
         <p>
           Already a member?{" "}
           <Link className={cx("link_primary")} to='/login'>

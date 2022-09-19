@@ -1,24 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-import classNames from "classnames/bind";
 import style from "./Login.module.scss";
+import classNames from "classnames/bind";
 
-import * as httpRequest from "~/utils/httpRequest";
 import errorInfor from "~/utils/errorInfor";
+import * as httpRequest from "~/utils/httpRequest";
 
-import Toast from "~/components/Toast";
-// import { useEffect } from "react";
+import { toastError, toastSuccess } from "~/components/Toast";
 
 const cx = classNames.bind(style);
 
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [disabledSubmit, setDisabledSubmit] = useState(false);
-  const [toast, setToast] = useState({
-    type: "error",
-    title: "Check your email address",
-  });
   const emptyValue = {
     email: false,
     password: false,
@@ -50,26 +46,25 @@ export default function Login() {
     const valuesUser = Object.values(user);
     if (!valuesUser.every((value) => Boolean(value))) {
       setLoading(false);
-      setToast({
-        type: "error",
-        title: "Check your email or password",
-      });
+      toastError("Check your email or password!");
       for (const key in user) {
         emptyValue[key] = !Boolean(user[key]);
       }
       setIsEmptyValue(emptyValue);
       return;
     }
-    setToast({
-      type: "success",
-      title: "Login success",
-    });
     (async () => {
       try {
         await httpRequest.post("user/login", { ...user });
         localStorage.setItem("userLogin", true);
+        toastSuccess("User logged in successfully");
         window.location.href = "/";
       } catch (error) {
+        toastError("Check your email and password!");
+        setIsEmptyValue({
+          email: true,
+          password: true,
+        });
         setLoading(false);
         errorInfor(error);
       }
@@ -101,7 +96,6 @@ export default function Login() {
             id='email'
             placeholder='Enter your email address'
             autoFocus={true}
-            // required
           />
         </div>
         <div
@@ -128,15 +122,23 @@ export default function Login() {
             // required
           />
         </div>
-        <Toast
+        <ToastContainer
+          position='top-right'
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+        />
+        <button
           className={cx("form_button")}
-          type={toast.type}
-          title={toast.title}
-          typeBtn='submit'
+          type='submit'
           disabled={disabledSubmit}
         >
           {!loading ? "Sign In" : <div className={cx("loading")}></div>}
-        </Toast>
+        </button>
+        <ToastContainer />
         <p>
           Not a member?{" "}
           <Link className={cx("link_primary")} to='/register'>

@@ -1,8 +1,10 @@
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+
 import style from "./Header.module.scss";
 import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
+
 import { GlobalState } from "~/components/GlobalState";
-import { useContext } from "react";
 import * as httpRequest from "~/utils/httpRequest";
 
 import Search from "./Search";
@@ -13,13 +15,16 @@ export default function Header() {
   const state = useContext(GlobalState);
   const [isLogin] = state.user.login;
   const [isAdmin] = state.user.admin;
-  const handleClickButton = async () => {
-    await httpRequest.get("/user/logout");
+  const handleClickButton = () => {
     localStorage.removeItem("userLogin");
-    window.location.reload();
+    (async () => {
+      await httpRequest.get("/user/logout");
+    })();
+    window.location.assign("/");
   };
   const handleClickLogo = () => {
-    window.location.href("/");
+    localStorage.removeItem("page");
+    window.location.assign("/");
   };
   return (
     <div className={cx("wrapper")}>

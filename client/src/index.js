@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import GlobalStyle from "./components/GlobalStyle";
 import DataProvider from "./components/GlobalState";
-
 import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

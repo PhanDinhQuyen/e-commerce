@@ -1,16 +1,13 @@
 import { useContext, Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { praviteRouters, publicRouters } from "./routers";
-
-import { GlobalState } from "./components/GlobalState";
-
 import DefaultLayout from "./layouts";
+import { GlobalState } from "./components/GlobalState";
+import { praviteRouters, publicRouters } from "./routers";
 
 export default function App() {
   const state = useContext(GlobalState);
   const [isAdmin] = state.user.admin;
-  console.log(isAdmin);
   const layoutOptions = {
     default: DefaultLayout,
   };
@@ -31,7 +28,7 @@ export default function App() {
           ></Route>
         );
       })}
-
+      {/* Only admin render router */}
       {isAdmin &&
         praviteRouters.map((router) => {
           const Page = router.page;

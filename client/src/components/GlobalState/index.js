@@ -1,8 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 
-import ProductAPI from "~/apis/productAPI";
 import UserAPI from "~/apis/userAPI";
-
+import ProductAPI from "~/apis/productAPI";
 import * as httpRequest from "~/utils/httpRequest";
 
 export const GlobalState = createContext();
@@ -25,7 +24,7 @@ export default function DataProvider({ children }) {
       })();
     }
     //
-  }, [token]);
+  }, []);
 
   const state = {
     token: [token, setToken],

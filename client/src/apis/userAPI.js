@@ -1,7 +1,7 @@
-import * as httpRequest from "~/utils/httpRequest";
-import errorInfor from "~/utils/errorInfor";
-
 import { useState, useEffect } from "react";
+
+import errorInfor from "~/utils/errorInfor";
+import * as httpRequest from "~/utils/httpRequest";
 
 export default function UserAPI({ token }) {
   const [isLogin, setIsLogin] = useState(false);
@@ -11,7 +11,6 @@ export default function UserAPI({ token }) {
     if (!token) {
       return;
     }
-
     //Get user
     (async () => {
       try {
@@ -21,7 +20,6 @@ export default function UserAPI({ token }) {
         setIsLogin(true);
         setIsAdmin(data.role === Number(process.env.REACT_APP_ROLE_ADMIN));
       } catch (error) {
-        console.log(error);
         errorInfor(error);
       }
     })();

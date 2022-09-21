@@ -8,7 +8,6 @@ export const GlobalState = createContext();
 
 export default function DataProvider({ children }) {
   const [token, setToken] = useState(null);
-
   useEffect(() => {
     const userLogin = localStorage.getItem("userLogin");
     if (userLogin) {

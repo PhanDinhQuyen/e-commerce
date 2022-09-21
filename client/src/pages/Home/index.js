@@ -1,24 +1,21 @@
-import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-
-import { GlobalState } from "~/components/GlobalState";
-
-import { useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import style from "./Home.module.scss";
 import classNames from "classnames/bind";
-import * as httpRequest from "~/utils/httpRequest";
 
 import errorInfor from "~/utils/errorInfor";
-import { IconNext, IconBack } from "~/static/icons";
-
+import ScrollOnTop from "~/components/ScrollOnTop";
+import * as httpRequest from "~/utils/httpRequest";
+import { IconNext, IconBack } from "~/static/Icons";
+import { GlobalState } from "~/components/GlobalState";
 const cx = classNames.bind(style);
 
 export default function Home() {
   const state = useContext(GlobalState);
   const [products, setProducts] = state.products;
   const [productsValueOption, setProductsValueOption] = useState("createAt");
-  const [page, setPage] = useState(+localStorage.getItem("page") || 1);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     (async () => {
       try {
@@ -39,18 +36,22 @@ export default function Home() {
 
   const handleBackPage = () => {
     setPage((preValue) => preValue - 1);
-    localStorage.setItem("page", page - 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const handleNextPage = () => {
     setPage((preValue) => preValue + 1);
-    localStorage.setItem("page", page + 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const renderProducts = () => {
     return (
       <ul className={cx("list_products")}>
-        {products.map((product) => (
+        {products.slice(0, 8).map((product) => (
           <li key={product._id}>
             <Link to={`/product/detail/${product._id}`}>
               <div className={cx("product_img")}>
@@ -84,6 +85,8 @@ export default function Home() {
         <button onClick={handleNextPage}>
           <IconNext className={cx("action_icon")} />
         </button>
+        {/* <div onClick={handleClickMoveTop} className={cx("on_top")}></div> */}
+        <ScrollOnTop></ScrollOnTop>
       </div>
     </div>
   );

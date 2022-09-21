@@ -26,8 +26,13 @@ const publicRouters = [
     page: Register,
   },
   {
-    path: "*",
-    page: Home,
+    path: "/notfound",
+    page: NotFound,
+    layout: "default",
+  },
+  {
+    path: "/*",
+    page: NotFound,
     layout: "default",
   },
 ];

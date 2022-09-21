@@ -13,8 +13,8 @@ export default function DetailProduct() {
   const state = useContext(GlobalState);
   const [products] = state.products;
 
-  const product = products.find((product) => product._id === id);
-  if (!product) return null;
+  let product = products.find((product) => product._id === id);
+  if (!product) return;
   return (
     <div className={cx("wrapper")}>
       <h2>{product.title}</h2>

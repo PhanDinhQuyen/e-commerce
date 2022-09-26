@@ -4,7 +4,7 @@
 
 ## Create .env in server
 
----
+```
 
 PORT=
 MONGODB_CONNECTION_URL=
@@ -16,17 +16,17 @@ CLOUD_API_SECRET=
 ROLE_ADMIN=
 CLIENT_URL=
 
----
+```
 
 ## Create .env in client
 
----
+```
 
 PORT=
 REACT_APP_URL_SV=
 REACT_APP_ROLE_ADMIN=
 
----
+```
 
 > Set up client
 

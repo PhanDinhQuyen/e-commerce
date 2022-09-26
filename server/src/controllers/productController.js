@@ -110,6 +110,24 @@ const productController = {
       return res.status(500).json({ error: err });
     }
   },
+  getAllProduct: async (req, res) => {
+    try {
+      const product = await Product.find();
+      return res.status(200).json({ product });
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
+  getProductWithId: async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id);
+      if (!product) return res.status(400).json({ msg: "Product not found." });
+
+      return res.status(200).json({ product });
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
   updateProduct: async (req, res) => {
     try {
       const {
@@ -128,9 +146,10 @@ const productController = {
       if (!image) return res.status(400).json({ msg: "No image available!" });
 
       await Product.findByIdAndUpdate(
-        { _id: product_id },
+        { _id: req.params.id },
         {
-          title: title,
+          product_id,
+          title,
           price,
           description,
           content,

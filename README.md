@@ -26,6 +26,8 @@ REACT_APP_ROLE_ADMIN=
 
 ```
 
+## Start client and server
+
 > Set up client
 
 ```
@@ -42,4 +44,4 @@ REACT_APP_ROLE_ADMIN=
   npm run dev
 ```
 
-_/ --Happy coding /_
+_/ --Happy coding-- /_

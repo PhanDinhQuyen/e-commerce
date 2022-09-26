@@ -20,7 +20,7 @@ export default function Home() {
     (async () => {
       try {
         const data = await httpRequest.get(
-          `/api/product?sort=${productsValueOption}&page=${page}&limit=9`
+          `/api/product?sort=${productsValueOption}&page=${page}&limit=8`
         );
         setProducts(data.products);
         console.log(data.products);

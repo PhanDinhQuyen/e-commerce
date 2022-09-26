@@ -1,29 +1,36 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import classNames from "classnames/bind";
 import style from "./DetailProduct.module.scss";
 
 import { GlobalState } from "~/components/GlobalState";
+import * as httpRequest from "~/utils/httpRequest";
+import { useState } from "react";
 
 const cx = classNames.bind(style);
 
 export default function DetailProduct() {
   const { id } = useParams();
-  const state = useContext(GlobalState);
-  const [products] = state.products;
 
-  let product = products.find((product) => product._id === id);
-  if (!product) return;
+  const [products, setProducts] = useState(null);
+  useEffect(() => {
+    (async () => {
+      const productFind = await httpRequest.get(`/api/product/${id}`);
+      setProducts(productFind.product);
+    })();
+  }, [id]);
+
+  if (!products) return;
   return (
     <div className={cx("wrapper")}>
-      <h2>{product.title}</h2>
+      <h2>{products.title}</h2>
       <div className={cx("product_img")}>
-        <img src={product.image.url} alt='' />
+        <img src={products.image.url} alt='' />
       </div>
-      <p className={cx("product_description")}>{product.description}</p>
+      <p className={cx("product_description")}>{products.description}</p>
       <p>
-        $<b>{product.price}</b>
+        $<b>{products.price}</b>
       </p>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Tippy from "@tippyjs/react/headless";
 
 import style from "./Search.module.scss";
@@ -8,14 +8,11 @@ import classNames from "classnames/bind";
 import { useDebounce } from "~/hooks";
 import * as httpRequest from "~/utils/httpRequest";
 import { IconSearch, IconClose } from "~/static/Icons";
-import { GlobalState } from "~/components/GlobalState";
 
 const cx = classNames.bind(style);
 
 export default function Search() {
-  const state = useContext(GlobalState);
   const inputRef = useRef();
-  const [products, setProducts] = state.products;
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [listProductSearch, setListProductSearch] = useState([]);
@@ -36,7 +33,6 @@ export default function Search() {
           },
         });
         setListProductSearch(data.products);
-        setProducts([...products.slice(0, 8), ...data.products]);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -57,19 +53,23 @@ export default function Search() {
     setListProductSearch([]);
     inputRef.current.focus();
   };
+  const handleHideListProduct = () => {
+    setHideListProductSearch(true);
+  };
   return (
     <div className={cx("wrapper-tippy")}>
       <Tippy
         interactive={true}
         visible={listProductSearch.length > 0 && !hideListProductSearch}
-        onClickOutside={() => {
-          setHideListProductSearch(true);
-        }}
+        onClickOutside={handleHideListProduct}
         render={(attrs) => (
           <ul className={cx("box-tippy")} tabIndex='-1' {...attrs}>
             {listProductSearch.map((product) => (
               <li key={product._id}>
-                <Link to={`/product/detail/${product._id}`}>
+                <Link
+                  onClick={handleHideListProduct}
+                  to={`/product/detail/${product._id}`}
+                >
                   {product.title}
                 </Link>
               </li>

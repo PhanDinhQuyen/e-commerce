@@ -1,7 +1,5 @@
 # Set up
 
-> Set up database
-
 ## Create .env in server
 
 ```

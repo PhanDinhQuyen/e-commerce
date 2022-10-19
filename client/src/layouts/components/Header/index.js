@@ -34,6 +34,8 @@ export default function Header() {
         </Link>
         <Search />
         <div>
+          <Link to='/user/cart'>Cart</Link>
+
           {isAdmin && <Link to='/admin/manage'>Manage</Link>}
           {!isLogin ? (
             <Link className={cx("login_btn")} to='/login'>

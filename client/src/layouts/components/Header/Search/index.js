@@ -17,7 +17,7 @@ export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [listProductSearch, setListProductSearch] = useState([]);
   const [hideListProductSearch, setHideListProductSearch] = useState(false);
-  const debounceValue = useDebounce(searchTerm, 700);
+  const debounceValue = useDebounce(searchTerm, 300);
 
   // localStorage.setItem("listProductSearch", JSON.stringify(listProductSearch));
 
@@ -27,6 +27,7 @@ export default function Search() {
 
     (async () => {
       try {
+        // console.log(searchTerm);
         const data = await httpRequest.get("/api/product", {
           params: {
             "lower_title[regex]": debounceValue,

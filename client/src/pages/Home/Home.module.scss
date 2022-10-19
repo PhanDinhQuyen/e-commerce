@@ -3,7 +3,6 @@
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   min-height: 100vh;
-  margin-top: 6rem;
   // padding: 0 2rem;
   display: flex;
   flex-direction: column;
@@ -159,4 +158,77 @@
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+}
+
+.product_action {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product_action_btn {
+  display: flex;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 378px) {
+  .product_action {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .button-30 {
+    font-size: 1.2rem !important;
+  }
+  .product_action_btn {
+    flex: 1;
+    justify-content: space-between  ;
+  }
+}
+
+.button-30 {
+  align-items: center;
+  appearance: none;
+  background-color: #fcfcfd;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  box-sizing: border-box;
+  color: #36395a;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  // height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+
+// .button-30:focus {
+//   box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+//     rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+// }
+
+.button-30:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-30:active {
+  box-shadow: #d6d6e7 0 3px 7px inset;
+  transform: translateY(2px);
 }

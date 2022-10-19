@@ -9,22 +9,26 @@ import ScrollOnTop from "~/components/ScrollOnTop";
 import * as httpRequest from "~/utils/httpRequest";
 import { IconNext, IconBack } from "~/static/Icons";
 import { GlobalState } from "~/components/GlobalState";
+import Loading from "~/components/Loading";
 const cx = classNames.bind(style);
 
 export default function Home() {
   const state = useContext(GlobalState);
   const [products, setProducts] = state.products;
   const [productsValueOption, setProductsValueOption] = useState("createAt");
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   useEffect(() => {
+    setLoading(true);
     (async () => {
       try {
         const data = await httpRequest.get(
-          `/api/product?sort=${productsValueOption}&page=${page}&limit=8`
+          `/api/product?sort=${productsValueOption}&page=${page}`
         );
         setProducts(data.products);
-        console.log(data.products);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         errorInfor(error);
       }
     })();
@@ -60,7 +64,13 @@ export default function Home() {
               <h2 className={cx("product_title")}>{product.title}</h2>
               <p>{product.description}</p>
             </Link>
-            <b>${product.price}</b>
+            <div className={cx("product_action")}>
+              <b>${product.price}</b>
+              <div className={cx("product_action_btn")}>
+                <button className={cx("button-30")}>View</button>
+                <button className={cx("button-30")}>Add to cart</button>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
@@ -76,7 +86,7 @@ export default function Home() {
           <option value='-price'>-Price</option>
         </select>
       </div>
-      {renderProducts()}
+      {loading ? <Loading /> : renderProducts()}
       <div className={cx("page_actions")}>
         <button disabled={!(page > 1)} onClick={handleBackPage}>
           <IconBack className={cx("action_icon")} />
@@ -86,7 +96,7 @@ export default function Home() {
           <IconNext className={cx("action_icon")} />
         </button>
         {/* <div onClick={handleClickMoveTop} className={cx("on_top")}></div> */}
-        <ScrollOnTop></ScrollOnTop>
+        <ScrollOnTop />
       </div>
     </div>
   );

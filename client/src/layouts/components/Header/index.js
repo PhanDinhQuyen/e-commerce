@@ -33,17 +33,17 @@ export default function Header() {
           Logo
         </Link>
         <Search />
-        <div>
+        <div className={cx("list_action")}>
           <Link to='/user/cart'>Cart</Link>
 
           {isAdmin && <Link to='/admin/manage'>Manage</Link>}
           {!isLogin ? (
             <Link className={cx("login_btn")} to='/login'>
-              Login
+              Log in
             </Link>
           ) : (
             <button className={cx("logout_btn")} onClick={handleClickButton}>
-              Logout
+              Log out
             </button>
           )}
         </div>

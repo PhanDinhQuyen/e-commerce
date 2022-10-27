@@ -16,6 +16,7 @@ const cx = classNames.bind(style);
 export default function DetailProduct() {
   const { id } = useParams();
   const state = useContext(GlobalState);
+  const addCart = state.user.addCart;
   const [productState] = state.products;
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,7 @@ export default function DetailProduct() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  console.log(products);
 
   if (!products)
     return (
@@ -52,14 +54,24 @@ export default function DetailProduct() {
         <Loading />
       ) : (
         <>
-          <h2>{products.title}</h2>
           <div className={cx("product_img")}>
             <img src={products.image.url} alt='' />
           </div>
-          <p className={cx("product_description")}>{products.description}</p>
-          <p>
-            $<b>{products.price}</b>
-          </p>
+          <div className={cx("product_detail")}>
+            <h2>
+              {products.title}
+              <span className={cx("check")}></span>
+            </h2>
+            <div className={cx("product_price")}>
+              <span>Price: </span>$<b>{products.price}</b>
+            </div>
+            <p className={cx("product_description")}>{products.description}</p>
+            <p className={cx("product_content")}>{products.content}</p>
+            <span>Sold: {products.sold}</span>
+            <button onClick={() => addCart(products)} className={cx("buy")}>
+              Buy now
+            </button>
+          </div>
         </>
       )}
     </div>

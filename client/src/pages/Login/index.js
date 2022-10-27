@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 
 import style from "./Login.module.scss";
 import classNames from "classnames/bind";
@@ -50,6 +49,7 @@ export default function Login() {
       for (const key in user) {
         emptyValue[key] = !Boolean(user[key]);
       }
+      console.log(emptyValue);
       setIsEmptyValue(emptyValue);
       return;
     }
@@ -61,10 +61,10 @@ export default function Login() {
         window.location.href = "/";
       } catch (error) {
         toastError("Check your email and password!");
-        setIsEmptyValue({
-          email: true,
-          password: true,
-        });
+        // setIsEmptyValue({
+        //   email: true,
+        //   password: true,
+        // });
         setLoading(false);
         errorInfor(error);
       }
@@ -122,15 +122,7 @@ export default function Login() {
             // required
           />
         </div>
-        <ToastContainer
-          position='top-right'
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          draggable
-        />
+
         <button
           className={cx("form_button")}
           type='submit'
@@ -138,9 +130,8 @@ export default function Login() {
         >
           {!loading ? "Sign In" : <div className={cx("loading")}></div>}
         </button>
-        <ToastContainer />
         <p>
-          Not a member?{" "}
+          Not a member?
           <Link className={cx("link_primary")} to='/register'>
             Sign up
           </Link>

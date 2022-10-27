@@ -1,25 +1,101 @@
 .wrapper {
-  margin: 0 auto;
-  margin-top: 6rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: var(--width-default);
-  padding: 0 2rem;
   min-height: calc(100vh - 6rem);
+  display: flex;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 4rem;
+  max-width: var(--width-default, 1150px);
 }
 
-.product_img {
-  // width: 100%;
-  max-width: 48rem;
-  img {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 2rem;
+@media screen and (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
   }
 }
 
-.product_description {
-  max-width: 48rem;
+.product_img {
+  min-width: 40rem;
+  width: 100%;
+  overflow: hidden;
+  height: 45rem;
+  border: 0.5rem solid gold;
+  border-radius: 0.5rem;
+  img {
+    object-fit: cover;
+    width: 100%;
+    // width: 40rem;
+    display: block;
+    height: 100%;
+  }
+}
+
+.product_detail {
+  display: flex;
+  flex-direction: column;
+  // height: 100%;
+  gap: 2rem;
+  font-size: 2rem;
+  h2 {
+    font-size: 4rem;
+    letter-spacing: 0.2rem;
+    color: #00008b;
+  }
+}
+
+.product_price {
+  color: var(--clr-grey-3);
+  span {
+    font-style: oblique;
+  }
+}
+
+.product_content {
+  font-size: 1.8rem;
+  color: var(--clr-grey-5);
+  font-style: italic;
+}
+
+.check {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 100px;
+  margin-left: 1rem;
+}
+
+.check::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 3px;
+  top: -1px;
+  width: 6px;
+  height: 10px;
+  border-color: currentColor;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform-origin: bottom left;
+  transform: rotate(45deg);
+}
+
+.buy {
+  padding: 1rem 2rem;
+  background: var(--clr-primary-5);
+  border-radius: 0.4rem;
+  font-size: 2rem;
+  color: var(--white);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  max-width: 20rem;
+  cursor: pointer;
+  // margin-top: 4rem;
+  &:hover {
+    background: var(--clr-primary-3);
+    color: var(--clr-grey-9);
+  }
 }

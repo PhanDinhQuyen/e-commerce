@@ -14,6 +14,8 @@ const cx = classNames.bind(style);
 
 export default function Home() {
   const state = useContext(GlobalState);
+  const addCart = state.user.addCart;
+  console.log(state.user);
   const [products, setProducts] = state.products;
   const [productsValueOption, setProductsValueOption] = useState("createAt");
   const [loading, setLoading] = useState(false);
@@ -68,7 +70,12 @@ export default function Home() {
               <b>${product.price}</b>
               <div className={cx("product_action_btn")}>
                 <button className={cx("button-30")}>View</button>
-                <button className={cx("button-30")}>Add to cart</button>
+                <button
+                  onClick={() => addCart(product)}
+                  className={cx("button-30")}
+                >
+                  Add to cart
+                </button>
               </div>
             </div>
           </li>
@@ -95,7 +102,6 @@ export default function Home() {
         <button onClick={handleNextPage}>
           <IconNext className={cx("action_icon")} />
         </button>
-        {/* <div onClick={handleClickMoveTop} className={cx("on_top")}></div> */}
         <ScrollOnTop />
       </div>
     </div>

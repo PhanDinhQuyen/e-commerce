@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const toastError = (message) => {
-  return toast.error(message, {
-    position: "top-right",
+  toast.error(message, {
+    position: "top-center",
     autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -14,8 +14,8 @@ export const toastError = (message) => {
 };
 
 export const toastSuccess = (message) => {
-  return toast.success(message, {
-    position: "top-right",
+  toast.success(message, {
+    position: "top-center",
     autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,

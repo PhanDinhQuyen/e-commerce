@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 
 import classNames from "classnames/bind";
 import style from "./Register.module.scss";
@@ -122,16 +121,6 @@ export default function Register() {
             placeholder='Enter your password'
           />
         </div>
-        <ToastContainer
-          position='top-right'
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-        />
         <button disabled={disabledSubmit} className={cx("form_button")}>
           {!loading ? "Sign In" : <div className={cx("loading")}></div>}
         </button>

@@ -3,5 +3,5 @@ import classNames from "classnames/bind";
 
 const cx = classNames.bind(style);
 export default function Loading({ className }) {
-  return <div className={cx("gg-spinner-two-alt", className)}></div>;
+  return <div className={cx("spinner", className)}></div>;
 }

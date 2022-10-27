@@ -6,7 +6,6 @@ router
   .route("/product")
   .post(authorizationUser, authorizationAdmin, productController.createProduct)
   .get(productController.getProducts);
-router.route("/product/all").get(productController.getAllProduct);
 
 router
   .route("/product/:id")

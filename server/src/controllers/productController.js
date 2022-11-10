@@ -44,8 +44,9 @@ class APIFeatures {
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    // 8 products for a page
-    const limit = this.queryString.limit * 1 || 8;
+    // 9 products for a page
+    const limit = this.queryString.limit * 1 || 9;
+    console.log(limit);
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit(limit);
     return this;
@@ -66,7 +67,6 @@ const productController = {
         checked,
         sold,
       } = req.body;
-      const lower_title = title.toLowerCase();
       if (!image) return res.status(400).json({ msg: "No image available!" });
 
       const product = await Product.findOne({ product_id });
@@ -101,7 +101,6 @@ const productController = {
         .filtering()
         .sorting()
         .paginating();
-      console.log(req.query);
       const products = await features.query;
       return res.status(200).json({
         products,

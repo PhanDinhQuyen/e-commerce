@@ -41,7 +41,7 @@ const ButtonWrapper = ({ amount }) => {
             ],
           });
         }}
-        onApprove={function (data, actions) {
+        onApprove={async function (data, actions) {
           return actions.order.capture().then(async function () {
             try {
               await httpRequest.patch(
@@ -66,7 +66,7 @@ const ButtonWrapper = ({ amount }) => {
 
 export default function PayPalButton({ amount = 0 }) {
   return (
-    <div style={{ width: "200px" }}>
+    <div>
       <PayPalScriptProvider
         options={{
           ...initialOptions,

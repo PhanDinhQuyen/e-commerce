@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 
 import style from "./Home.module.scss";
@@ -15,17 +15,17 @@ const cx = classNames.bind(style);
 export default function Home() {
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
-  console.log(state.user);
   const [products, setProducts] = state.products;
   const [productsValueOption, setProductsValueOption] = useState("createAt");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useSearchParams();
+  const pageCurrent = page.get("p") || 1;
   useEffect(() => {
     setLoading(true);
     (async () => {
       try {
         const data = await httpRequest.get(
-          `/api/product?sort=${productsValueOption}&page=${page}`
+          `/api/product?sort=${productsValueOption}&page=${pageCurrent}&limit=${9}`
         );
         setProducts(data.products);
         setLoading(false);
@@ -34,30 +34,35 @@ export default function Home() {
         errorInfor(error);
       }
     })();
-  }, [productsValueOption, page, setProducts]);
+  }, [productsValueOption, pageCurrent, setProducts]);
   const handleChangeSelect = (e) => {
     e.preventDefault();
+    setPage({});
     setProductsValueOption(e.target.value);
   };
 
   const handleBackPage = () => {
-    setPage((preValue) => preValue - 1);
+    setPage({
+      p: +pageCurrent - 1,
+    });
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      // behavior: "smooth",
     });
   };
   const handleNextPage = () => {
-    setPage((preValue) => preValue + 1);
+    setPage({
+      p: +pageCurrent + 1,
+    });
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      // behavior: "smooth",
     });
   };
   const renderProducts = () => {
     return (
       <ul className={cx("list_products")}>
-        {products.slice(0, 8).map((product) => (
+        {products.map((product) => (
           <li key={product._id}>
             <Link to={`/product/detail/${product._id}`}>
               <div className={cx("product_img")}>
@@ -69,7 +74,12 @@ export default function Home() {
             <div className={cx("product_action")}>
               <b>${product.price}</b>
               <div className={cx("product_action_btn")}>
-                <button className={cx("button-30")}>View</button>
+                <Link
+                  to={`/product/detail/${product._id}`}
+                  className={cx("button-30")}
+                >
+                  View
+                </Link>
                 <button
                   onClick={() => addCart(product)}
                   className={cx("button-30")}
@@ -95,10 +105,10 @@ export default function Home() {
       </div>
       {loading ? <Loading /> : renderProducts()}
       <div className={cx("page_actions")}>
-        <button disabled={!(page > 1)} onClick={handleBackPage}>
+        <button disabled={!(pageCurrent > 1)} onClick={handleBackPage}>
           <IconBack className={cx("action_icon")} />
         </button>
-        <span className={cx("page_number")}>{page}</span>
+        <span className={cx("page_number")}>{pageCurrent}</span>
         <button onClick={handleNextPage}>
           <IconNext className={cx("action_icon")} />
         </button>

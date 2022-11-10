@@ -39,11 +39,12 @@
   padding: 2rem 3rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     letter-spacing: 0.2rem;
     color: #00008b;
   }
   position: relative;
+  border-radius: 1rem;
 }
 
 .product_price {
@@ -61,9 +62,21 @@
 .amount {
   display: flex;
   // padding: 1rem 0;
-  gap: 1rem;
   button {
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--white, white);
+    background-color: var(--clr-primary-6);
+    font-size: 1.6;
+    line-height: 0;
+    svg {
+      line-height: 0;
+    }
+  }
+  p {
+    margin: 0 0.5rem;
+    // padding: 0 1rem;
+    min-width: 3.5rem;
+    text-align: center;
   }
 }
 
@@ -71,20 +84,34 @@
   position: absolute;
   right: 0;
   top: 0;
+  background-color: transparent;
+  font-size: 2.5rem;
+  color: var(--clr-red-dark);
 }
 
 .payment {
   position: relative;
-  width: 20rem;
-  height: 100vh;
+  width: 25rem;
 }
 .fixed_payment {
+  margin: 0 auto;
   perspective-origin: right top;
   top: 8rem;
   bottom: 0;
-  width: 20rem;
+  width: 25rem;
   background: rgba(255, 255, 255, 1);
   position: fixed;
   z-index: 99;
   padding-right: 8px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.total {
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--clr-grey-5);
+  font-weight: 600;
 }

@@ -58,7 +58,7 @@ export default function Login() {
         await httpRequest.post("user/login", { ...user });
         localStorage.setItem("userLogin", true);
         toastSuccess("User logged in successfully");
-        window.location.href = "/";
+        setTimeout(() => (window.location.href = "/"), 2000);
       } catch (error) {
         toastError("Check your email and password!");
         // setIsEmptyValue({

@@ -73,17 +73,17 @@
 }
 
 .box-tippy {
-  background-color: red;
+  background-color: var(--white);
   width: 32rem;
-  min-height: 10rem;
+  height: 32rem;
   max-height: 32rem;
-  overflow-y: overlay;
+  overflow-y: scroll;
   display: flex;
-  justify-content: center;
-  // align-items: center;
-  // padding: 1rem 2rem;
-  gap: 1rem;
   flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
   & > li {
     padding: 1rem 2rem;
   }

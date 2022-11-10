@@ -5,6 +5,7 @@ import style from "./Cart.module.scss";
 import * as httpRequest from "~/utils/httpRequest";
 import { useEffect } from "react";
 import PayPalButton from "./PayPal";
+import { RiAddLine, RiCloseLine, RiSubtractLine } from "react-icons/ri";
 
 const cx = classNames.bind(style);
 
@@ -37,33 +38,31 @@ export default function Cart() {
   };
 
   const handleDecrement = (id) => {
-    let product;
-    cart.forEach((item) => {
-      if (item._id === id) {
-        item.quantity -= 1;
-        product = item;
-      }
-    });
-    if (product.quantity <= 0) {
-      cart.forEach((item, index) => {
+    const cartCurrent = cart
+      .map((item) => {
         if (item._id === id) {
-          cart.splice(index, 1);
+          return item.quantity > 0
+            ? { quantity: --item.quantity, ...item }
+            : null;
         }
-      });
-    }
 
-    setCart([...cart]);
-    addToCart(cart);
+        return item;
+      })
+      .filter((item) => !!item);
+    setCart(cartCurrent);
+    addToCart(cartCurrent);
   };
   const hanleIncrement = (id) => {
-    cart.forEach((item) => (item._id === id ? (item.quantity += 1) : item));
-    setCart([...cart]);
-    addToCart(cart);
+    const cartCurrent = cart.map((item) =>
+      item._id === id ? { quantity: ++item.quantity, ...item } : item
+    );
+    setCart(cartCurrent);
+    addToCart(cartCurrent);
   };
   const handleRemoveItem = (id) => {
-    cart.forEach((item, index) => item._id === id && cart.splice(index, 1));
-    setCart([...cart]);
-    addToCart(cart);
+    const cartCurrent = cart.filter((item) => item._id !== id);
+    setCart(cartCurrent);
+    addToCart(cartCurrent);
   };
   const renderCart = () => {
     return (
@@ -81,17 +80,19 @@ export default function Cart() {
                 </div>
                 <div className={cx("amount")}>
                   <button onClick={() => handleDecrement(product._id)}>
-                    -
+                    <RiSubtractLine />
                   </button>
                   <p>{product.quantity}</p>
-                  <button onClick={() => hanleIncrement(product._id)}>+</button>
+                  <button onClick={() => hanleIncrement(product._id)}>
+                    <RiAddLine />
+                  </button>
                 </div>
               </div>
               <button
                 onClick={() => handleRemoveItem(product._id)}
                 className={cx("product_del")}
               >
-                Del
+                <RiCloseLine />
               </button>
             </div>
           ))}
@@ -107,10 +108,28 @@ export default function Cart() {
       ) : (
         <div className={cx("wrapper_product")}>Cart Empty</div>
       )}
-
       <div className={cx("payment")}>
         <div className={cx("fixed_payment")}>
-          Payment: {total}
+          <div>
+            <h2>Details:</h2>
+            <div>
+              {cart.map((item) => {
+                const { title, price, quantity, _id } = item;
+                return (
+                  <div key={_id}>
+                    <div>{title}:</div>
+                    <div>
+                      {price}$ x {quantity}&nbsp;:&nbsp;
+                      {+price * +quantity}$
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={cx("total")}>
+            Payment: <span>{total.toFixed(2)}</span>$
+          </div>
           <PayPalButton amount={total} />
         </div>
       </div>

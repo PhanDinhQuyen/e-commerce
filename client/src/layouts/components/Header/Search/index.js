@@ -71,7 +71,8 @@ export default function Search() {
                   onClick={handleHideListProduct}
                   to={`/product/detail/${product._id}`}
                 >
-                  {product.title}
+                  {/* <img width='100px' src={product.image.url} alt='' /> */}
+                  <p>{product.title}</p>
                 </Link>
               </li>
             ))}

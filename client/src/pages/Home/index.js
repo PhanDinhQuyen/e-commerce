@@ -16,16 +16,17 @@ export default function Home() {
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
   const [products, setProducts] = state.products;
-  const [productsValueOption, setProductsValueOption] = useState("createAt");
+  // const [productsValueOption, setProductsValueOption] = useState("createAt");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useSearchParams();
+  const sortByCurrent = page.get("s") || "createdAt";
   const pageCurrent = page.get("p") || 1;
   useEffect(() => {
     setLoading(true);
     (async () => {
       try {
         const data = await httpRequest.get(
-          `/api/product?sort=${productsValueOption}&page=${pageCurrent}&limit=${9}`
+          `/api/product?sort=${sortByCurrent}&page=${pageCurrent}&limit=${9}`
         );
         setProducts(data.products);
         setLoading(false);
@@ -34,15 +35,17 @@ export default function Home() {
         errorInfor(error);
       }
     })();
-  }, [productsValueOption, pageCurrent, setProducts]);
+  }, [sortByCurrent, pageCurrent, setProducts]);
   const handleChangeSelect = (e) => {
     e.preventDefault();
-    setPage({});
-    setProductsValueOption(e.target.value);
+    setPage({
+      s: e.target.value,
+    });
   };
 
   const handleBackPage = () => {
     setPage({
+      s: sortByCurrent,
       p: +pageCurrent - 1,
     });
     window.scrollTo({
@@ -52,6 +55,7 @@ export default function Home() {
   };
   const handleNextPage = () => {
     setPage({
+      s: sortByCurrent,
       p: +pageCurrent + 1,
     });
     window.scrollTo({
@@ -96,7 +100,11 @@ export default function Home() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("select")}>
-        <select onChange={handleChangeSelect}>
+        <select
+          // defaultValue='createdAt'
+          value={sortByCurrent}
+          onChange={handleChangeSelect}
+        >
           <option value='createdAt'>Created At</option>
           <option value='-createdAt'>-Created At</option>
           <option value='price'>Price</option>

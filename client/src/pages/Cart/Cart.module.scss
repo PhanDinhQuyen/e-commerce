@@ -115,3 +115,43 @@
   color: var(--clr-grey-5);
   font-weight: 600;
 }
+
+@media screen and (max-width: 924px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .wrapper_product {
+    width: 100%;
+  }
+  .payment {
+    position: static !important;
+    width: 100%;
+  }
+  .fixed_payment {
+    position: static;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .product_detail {
+    flex-direction: column;
+  }
+  .product_content {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  .product_img {
+    width: 100%;
+    height: auto;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

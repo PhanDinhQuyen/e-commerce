@@ -1,12 +1,14 @@
-import { GlobalState } from "~/components/GlobalState";
-import { useContext, useState } from "react";
 import classNames from "classnames/bind";
-import style from "./Cart.module.scss";
-import * as httpRequest from "~/utils/httpRequest";
-import { useEffect } from "react";
-import PayPalButton from "./PayPal";
-import { RiAddLine, RiCloseLine, RiSubtractLine } from "react-icons/ri";
+import { useContext } from "react";
+import { GlobalState } from "~/components/GlobalState";
 
+import CartItem from "~/components/Cart/CartItem";
+import PayPalButton from "./PayPal";
+
+import * as httpRequest from "~/utils/httpRequest";
+
+import style from "./Cart.module.scss";
+import { useEffect, useState } from "react";
 const cx = classNames.bind(style);
 
 export default function Cart() {
@@ -14,19 +16,20 @@ export default function Cart() {
   const [cart, setCart] = state.user.cart || [];
   const [token] = state.token;
   const [total, setTotal] = useState(0);
-
+  const [totalItems, setTotalItems] = useState(0);
   useEffect(() => {
+    let totalPrice = 0,
+      totalQuantity = 0;
     const getTotal = () => {
-      const total = cart.reduce((prev, item) => {
-        return prev + item.price * item.quantity;
-      }, 0);
-
-      setTotal(total);
+      for (let i = 0; i < cart.length; i++) {
+        totalPrice += cart[i].quantity * cart[i].price;
+        totalQuantity += cart[i].quantity;
+      }
     };
-
     getTotal();
+    setTotal(totalPrice);
+    setTotalItems(totalQuantity);
   }, [cart]);
-
   const addToCart = async (cart) => {
     await httpRequest.patch(
       "/user/addcart",
@@ -36,102 +39,53 @@ export default function Cart() {
       }
     );
   };
+  const handleIncrement = (id) => {
+    const newCart = cart.map((item) =>
+      item._id === id
+        ? Object.assign(item, { quantity: item.quantity + 1 })
+        : item
+    );
+
+    setCart(newCart);
+    addToCart(newCart);
+  };
 
   const handleDecrement = (id) => {
-    const cartCurrent = cart
-      .map((item) => {
-        if (item._id === id) {
-          return item.quantity > 0
-            ? { quantity: --item.quantity, ...item }
-            : null;
-        }
+    const newCart = cart.map((item) =>
+      item._id === id
+        ? Object.assign(item, { quantity: item.quantity - 1 })
+        : item
+    );
 
-        return item;
-      })
-      .filter((item) => !!item);
-    setCart(cartCurrent);
-    addToCart(cartCurrent);
+    setCart(newCart);
+    addToCart(newCart);
   };
-  const hanleIncrement = (id) => {
-    const cartCurrent = cart.map((item) =>
-      item._id === id ? { quantity: ++item.quantity, ...item } : item
-    );
-    setCart(cartCurrent);
-    addToCart(cartCurrent);
-  };
-  const handleRemoveItem = (id) => {
-    const cartCurrent = cart.filter((item) => item._id !== id);
-    setCart(cartCurrent);
-    addToCart(cartCurrent);
-  };
-  const renderCart = () => {
-    return (
-      <>
-        <div className={cx("wrapper_product")}>
-          {cart.reverse().map((product) => (
-            <div key={product._id} className={cx("product_detail")}>
-              <div className={cx("product_img")}>
-                <img src={product.image.url} alt='' />
-              </div>
-              <div className={cx("product_content")}>
-                <div>
-                  <h2>{product.title}</h2>
-                  <span>Price: </span>$<b>{product.price}</b>
-                </div>
-                <div className={cx("amount")}>
-                  <button onClick={() => handleDecrement(product._id)}>
-                    <RiSubtractLine />
-                  </button>
-                  <p>{product.quantity}</p>
-                  <button onClick={() => hanleIncrement(product._id)}>
-                    <RiAddLine />
-                  </button>
-                </div>
-              </div>
-              <button
-                onClick={() => handleRemoveItem(product._id)}
-                className={cx("product_del")}
-              >
-                <RiCloseLine />
-              </button>
-            </div>
-          ))}
-        </div>
-      </>
-    );
+
+  const handleDelete = (id) => {
+    const newCart = cart.filter((item) => item._id !== id);
+
+    setCart(newCart);
+    addToCart(newCart);
   };
 
   return (
     <div className={cx("wrapper")}>
-      {cart.length > 0 ? (
-        renderCart()
-      ) : (
-        <div className={cx("wrapper_product")}>Cart Empty</div>
-      )}
-      <div className={cx("payment")}>
-        <div className={cx("fixed_payment")}>
-          <div>
-            <h2>Details:</h2>
-            <div>
-              {cart.map((item) => {
-                const { title, price, quantity, _id } = item;
-                return (
-                  <div key={_id}>
-                    <div>{title}:</div>
-                    <div>
-                      {price}$ x {quantity}&nbsp;:&nbsp;
-                      {+price * +quantity}$
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className={cx("total")}>
-            Payment: <span>{total.toFixed(2)}</span>$
-          </div>
-          <PayPalButton amount={total} />
-        </div>
+      <h2>Shopping Cart</h2>
+      <p>You have {totalItems} item in your cart!</p>
+      <div className={cx("cart")}>
+        {cart.map((item) => {
+          const obj = {
+            handleDecrement,
+            handleIncrement,
+            handleDelete,
+            ...item,
+          };
+          return <CartItem key={item._id} {...obj} />;
+        })}
+      </div>
+      <p className={cx("total")}>Total: {total}$</p>
+      <div className={cx("paypal")}>
+        <PayPalButton amount={total} />
       </div>
     </div>
   );

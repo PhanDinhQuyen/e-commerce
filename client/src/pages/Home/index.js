@@ -16,7 +16,6 @@ export default function Home() {
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
   const [products, setProducts] = state.products;
-  // const [productsValueOption, setProductsValueOption] = useState("createAt");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useSearchParams();
   const sortByCurrent = page.get("s") || "createdAt";
@@ -26,8 +25,9 @@ export default function Home() {
     (async () => {
       try {
         const data = await httpRequest.get(
-          `/api/product?sort=${sortByCurrent}&page=${pageCurrent}&limit=${9}`
+          `/api/product?sort=${sortByCurrent}&page=${pageCurrent}`
         );
+        console.log(data);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {
@@ -35,7 +35,7 @@ export default function Home() {
         errorInfor(error);
       }
     })();
-  }, [sortByCurrent, pageCurrent, setProducts]);
+  }, [setProducts, page, sortByCurrent, pageCurrent]);
   const handleChangeSelect = (e) => {
     e.preventDefault();
     setPage({
@@ -100,11 +100,7 @@ export default function Home() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("select")}>
-        <select
-          // defaultValue='createdAt'
-          value={sortByCurrent}
-          onChange={handleChangeSelect}
-        >
+        <select value={sortByCurrent} onChange={handleChangeSelect}>
           <option value='createdAt'>Created At</option>
           <option value='-createdAt'>-Created At</option>
           <option value='price'>Price</option>

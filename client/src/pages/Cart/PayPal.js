@@ -73,7 +73,7 @@ export default function PayPalButton({ amount = 0 }) {
           components: "buttons",
         }}
       >
-        <ButtonWrapper showSpinner={false} amount={amount} />
+        <ButtonWrapper showSpinner={true} amount={amount} />
       </PayPalScriptProvider>
     </div>
   );

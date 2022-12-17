@@ -5,6 +5,7 @@ import * as httpRequest from "~/utils/httpRequest";
 
 import { GlobalState } from "~/components/GlobalState";
 import errorInfor from "~/utils/errorInfor";
+import { useState } from "react";
 
 const initialOptions = {
   "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID,
@@ -19,6 +20,7 @@ const ButtonWrapper = ({ amount }) => {
   const [token] = state.token;
   const currency = "USD";
   const style = { layout: "vertical" };
+  const [orderID, setOrderID] = useState(null);
   // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
   // This is the main reason to wrap the PayPalButtons in a new component
 
@@ -42,22 +44,29 @@ const ButtonWrapper = ({ amount }) => {
           });
         }}
         onApprove={async function (data, actions) {
-          return actions.order.capture().then(async function () {
-            try {
-              await httpRequest.patch(
-                "/user/addcart",
-                { cart: [] },
-                {
-                  headers: { Authorization: token },
-                }
-              );
-              setCart([]);
-              toastSuccess("Order has been successfully");
-            } catch (error) {
-              toastError("Error while updating");
-              errorInfor(error);
-            }
-          });
+          return actions.order
+            .capture()
+            .then(function (details) {
+              console.log(details);
+            })
+            .then(async function () {
+              try {
+                console.log(data);
+
+                await httpRequest.patch(
+                  "/user/addcart",
+                  { cart: [] },
+                  {
+                    headers: { Authorization: token },
+                  }
+                );
+                setCart([]);
+                toastSuccess("Order has been successfully");
+              } catch (error) {
+                toastError("Error while updating");
+                errorInfor(error);
+              }
+            });
         }}
       />
     </>

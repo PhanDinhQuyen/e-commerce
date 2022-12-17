@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import classNames from "classnames/bind";
 import style from "./DetailProduct.module.scss";
@@ -10,6 +10,7 @@ import { useState } from "react";
 
 import Loading from "~/components/Loading";
 import errorInfor from "~/utils/errorInfor";
+import ProductItem from "~/components/ProductItem";
 
 const cx = classNames.bind(style);
 
@@ -18,19 +19,19 @@ export default function DetailProduct() {
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
   const [productState] = state.products;
-  const [products, setProducts] = useState(null);
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    const [product] = productState.filter((product) => product._id === id);
+    const [product] = productState.filter((item) => item._id === id);
     if (product) {
-      setProducts(product);
+      setProduct(product);
       setLoading(false);
     } else {
       (async () => {
         try {
           const productFind = await httpRequest.get(`/api/product/${id}`);
-          setProducts(productFind.product);
+          setProduct(productFind.product);
           setLoading(false);
         } catch (error) {
           setLoading(false);
@@ -38,39 +39,47 @@ export default function DetailProduct() {
         }
       })();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  console.log(products);
-
-  if (!products)
+  if (!product) {
     return (
       <div className={cx("wrapper")}>
         <Loading />
       </div>
     );
+  }
+
   return (
     <div className={cx("wrapper")}>
-      {loading ? (
-        <Loading />
-      ) : (
+      {!loading && (
         <>
-          <div className={cx("product_img")}>
-            <img src={products.image.url} alt='' />
-          </div>
-          <div className={cx("product_detail")}>
-            <h2>
-              {products.title}
-              <span className={cx("check")}></span>
-            </h2>
-            <div className={cx("product_price")}>
-              <span>Price: </span>$<b>{products.price}</b>
+          <ProductItem product={product} addCart={addCart} />
+          <div className={cx("related")}>
+            <h3>Related Product</h3>
+            <div className={cx("related_product")}>
+              {productState
+                .filter((item) => item._id !== product._id)
+                .slice(0, 3)
+                .map((item) => (
+                  <Link
+                    onClick={() =>
+                      window.scrollTo({
+                        top: 0,
+                        behavior: "smooth",
+                      })
+                    }
+                    to={`/product/detail/${item._id}`}
+                    key={item?._id}
+                    className={cx("product")}
+                  >
+                    <div className={cx("image")}>
+                      <img src={item.image.url} alt='' />
+                    </div>
+                    <h4>{item?.title}</h4>
+                  </Link>
+                ))}
             </div>
-            <p className={cx("product_description")}>{products.description}</p>
-            <p className={cx("product_content")}>{products.content}</p>
-            <span>Sold: {products.sold}</span>
-            <button onClick={() => addCart(products)} className={cx("buy")}>
-              Buy now
-            </button>
           </div>
         </>
       )}

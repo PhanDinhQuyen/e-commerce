@@ -1,101 +1,54 @@
 .wrapper {
-  min-height: calc(100vh - 6rem);
-  display: flex;
-  justify-content: center;
-  padding: 3rem 2rem;
-  gap: 4rem;
-  max-width: var(--width-default, 1150px);
-}
-
-@media screen and (max-width: 768px) {
-  .wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.product_img {
-  min-width: 40rem;
-  width: 100%;
-  overflow: hidden;
-  height: 45rem;
-  border: 0.5rem solid gold;
-  border-radius: 0.5rem;
-  img {
-    object-fit: cover;
-    width: 100%;
-    // width: 40rem;
-    display: block;
-    height: 100%;
-  }
-}
-
-.product_detail {
   display: flex;
   flex-direction: column;
-  // height: 100%;
-  gap: 2rem;
-  font-size: 2rem;
-  h2 {
-    font-size: 4rem;
-    letter-spacing: 0.2rem;
-    color: #00008b;
+  width: 100%;
+  max-width: var(--width-default);
+  padding: 0 2.5rem;
+  margin-top: 5rem;
+  gap: 3rem;
+  place-content: center;
+}
+
+.related {
+  margin-top: 5rem;
+}
+
+.related_product {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem 5rem;
+  place-items: center;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  gap: 1rem;
+}
+
+.image {
+  width: 100%;
+  line-height: 0;
+  img {
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
   }
 }
 
-.product_price {
-  color: var(--clr-grey-3);
-  span {
-    font-style: oblique;
+@media screen and (max-width: 900px) {
+  .related {
+    max-width: 700px;
+    width: 100%;
+    margin: 5rem auto;
   }
 }
 
-.product_content {
-  font-size: 1.8rem;
-  color: var(--clr-grey-5);
-  font-style: italic;
-}
-
-.check {
-  box-sizing: border-box;
-  position: relative;
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  border: 2px solid;
-  border-radius: 100px;
-  margin-left: 1rem;
-}
-
-.check::after {
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  left: 3px;
-  top: -1px;
-  width: 6px;
-  height: 10px;
-  border-color: currentColor;
-  border-width: 0 2px 2px 0;
-  border-style: solid;
-  transform-origin: bottom left;
-  transform: rotate(45deg);
-}
-
-.buy {
-  padding: 1rem 2rem;
-  background: var(--clr-primary-5);
-  border-radius: 0.4rem;
-  font-size: 2rem;
-  color: var(--white);
-  font-weight: 600;
-  transition: all 0.2s ease-in-out;
-  max-width: 20rem;
-  cursor: pointer;
-  // margin-top: 4rem;
-  &:hover {
-    background: var(--clr-primary-3);
-    color: var(--clr-grey-9);
+@media screen and (max-width: 1048px) {
+  .related_product {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }

@@ -27,13 +27,12 @@ export default function Search() {
 
     (async () => {
       try {
-        // console.log(searchTerm);
         const data = await httpRequest.get("/api/product", {
           params: {
             "lower_title[regex]": debounceValue,
           },
         });
-        setListProductSearch(data.products);
+        setListProductSearch([...data.products]);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -70,8 +69,9 @@ export default function Search() {
                 <Link
                   onClick={handleHideListProduct}
                   to={`/product/detail/${product._id}`}
+                  className={cx("wrapper_search_item")}
                 >
-                  {/* <img width='100px' src={product.image.url} alt='' /> */}
+                  <img className={cx("image")} src={product.image.url} alt='' />
                   <p>{product.title}</p>
                 </Link>
               </li>

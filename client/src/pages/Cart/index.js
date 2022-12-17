@@ -83,10 +83,12 @@ export default function Cart() {
           return <CartItem key={item._id} {...obj} />;
         })}
       </div>
-      <p className={cx("total")}>Total: {total}$</p>
-      <div className={cx("paypal")}>
-        <PayPalButton amount={total} />
-      </div>
+      {totalItems > 0 && <p className={cx("total")}>Total: {total}$</p>}
+      {totalItems > 0 && (
+        <div className={cx("paypal")}>
+          <PayPalButton amount={total} />
+        </div>
+      )}
     </div>
   );
 }

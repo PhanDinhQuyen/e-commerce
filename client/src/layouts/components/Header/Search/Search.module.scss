@@ -75,17 +75,16 @@
 .box-tippy {
   background-color: var(--white);
   width: 32rem;
-  height: 32rem;
   max-height: 32rem;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   gap: 1rem;
-  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  & > li {
-    padding: 1rem 2rem;
+  transition: 0.5s all ease;
+  & > li:hover {
+    background-color: antiquewhite;
   }
 }
 
@@ -93,5 +92,18 @@
   color: rgba(22, 24, 35, 0.35);
   &-active {
     color: rgba(22, 24, 35, 0.8);
+  }
+}
+
+.wrapper_search_item {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 2rem;
+  .image {
+    display: block;
+    width: 50px;
+    border-radius: 0.4rem;
   }
 }

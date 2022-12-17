@@ -13,14 +13,22 @@
 
 @media screen and (max-width: 524px) {
   .wrapper {
-    gap: 0;
+    gap: 1rem;
+    font-size: 1.4rem;
   }
   .quantity {
     margin-right: 1rem !important;
+    p {
+      min-width: 3rem;
+      text-align: center;
+    }
   }
   .wrapper_img {
     max-width: 100px !important;
     min-width: 100px !important;
+  }
+  .delete {
+    margin: 0 !important;
   }
 }
 

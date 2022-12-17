@@ -15,7 +15,7 @@ const cx = classNames.bind(style);
 export default function Home() {
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
-  const [products, setProducts] = state.products;
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useSearchParams();
   const sortByCurrent = page.get("s") || "createdAt";
@@ -113,7 +113,7 @@ export default function Home() {
           <IconBack className={cx("action_icon")} />
         </button>
         <span className={cx("page_number")}>{pageCurrent}</span>
-        <button onClick={handleNextPage}>
+        <button disabled={products.length === 0} onClick={handleNextPage}>
           <IconNext className={cx("action_icon")} />
         </button>
         <ScrollOnTop />

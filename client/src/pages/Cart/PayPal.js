@@ -5,7 +5,6 @@ import * as httpRequest from "~/utils/httpRequest";
 
 import { GlobalState } from "~/components/GlobalState";
 import errorInfor from "~/utils/errorInfor";
-import { useState } from "react";
 
 const initialOptions = {
   "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID,
@@ -16,11 +15,10 @@ const initialOptions = {
 const ButtonWrapper = ({ amount }) => {
   const state = useContext(GlobalState);
   // eslint-disable-next-line no-unused-vars
-  const [_, setCart] = state.user.cart;
+  const [cart, setCart] = state.user.cart;
   const [token] = state.token;
   const currency = "USD";
   const style = { layout: "vertical" };
-  const [orderID, setOrderID] = useState(null);
   // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
   // This is the main reason to wrap the PayPalButtons in a new component
 
@@ -46,13 +44,24 @@ const ButtonWrapper = ({ amount }) => {
         onApprove={async function (data, actions) {
           return actions.order
             .capture()
-            .then(function (details) {
-              console.log(details);
+            .then(async function (details) {
+              const infor = details.purchase_units[0];
+              return {
+                address: infor.shipping.address,
+                paymentID: data.payerID,
+              };
             })
-            .then(async function () {
+            .then(async function (infor) {
               try {
-                console.log(data);
+                const { paymentID, address } = infor;
 
+                await httpRequest.post(
+                  "/api/payment",
+                  { cart, paymentID, address },
+                  {
+                    headers: { Authorization: token },
+                  }
+                );
                 await httpRequest.patch(
                   "/user/addcart",
                   { cart: [] },

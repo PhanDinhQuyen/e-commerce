@@ -15,6 +15,7 @@ export default function Cart() {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.user.cart || [];
   const [token] = state.token;
+  console.log(token);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function Cart() {
       }
     );
   };
+
   const handleIncrement = (id) => {
     const newCart = cart.map((item) =>
       item._id === id

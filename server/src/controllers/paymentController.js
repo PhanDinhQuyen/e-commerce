@@ -11,6 +11,8 @@ const paymentController = {
   },
   createPayment: async (req, res) => {
     try {
+      console.log(req.user);
+      console.log(1);
       const user = await User.findById(req.user.id).select("name email");
 
       if (!user) return res.status(400).json({ msg: "User does not exist" });

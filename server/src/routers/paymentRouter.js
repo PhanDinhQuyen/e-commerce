@@ -6,3 +6,5 @@ router
   .route("/payment")
   .get(authorizationUser, authorizationAdmin, paymentController.getPayments)
   .post(authorizationUser, paymentController.createPayment);
+
+module.exports = router;

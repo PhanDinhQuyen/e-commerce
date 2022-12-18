@@ -15,6 +15,7 @@ const {
   userRouter,
   uploadRouter,
   productRouter,
+  paymentRouter,
 } = require("./src/routers");
 
 const app = express();
@@ -46,7 +47,7 @@ app.use("/user", userRouter);
 app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
 app.use("/api", productRouter);
-
+app.use("/api", paymentRouter);
 // app.get("/createdata", async (req, res, next) => {
 //   for (let i = 0; i < 50; i++) {
 //     try {

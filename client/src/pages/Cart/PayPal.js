@@ -11,23 +11,18 @@ const initialOptions = {
   currency: "USD",
 };
 
-// Custom component to wrap the PayPalButtons and handle currency changes
 const ButtonWrapper = ({ amount }) => {
   const state = useContext(GlobalState);
-  // eslint-disable-next-line no-unused-vars
   const [cart, setCart] = state.user.cart;
   const [token] = state.token;
   const currency = "USD";
   const style = { layout: "vertical" };
-  // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
-  // This is the main reason to wrap the PayPalButtons in a new component
 
   return (
     <>
       <PayPalButtons
         style={style}
         disabled={false}
-        // forceReRender={[amount, currency, style]}
         fundingSource={undefined}
         createOrder={(data, actions) => {
           return actions.order.create({
@@ -42,40 +37,28 @@ const ButtonWrapper = ({ amount }) => {
           });
         }}
         onApprove={async function (data, actions) {
-          return actions.order
-            .capture()
-            .then(async function (details) {
-              const infor = details.purchase_units[0];
-              return {
-                address: infor.shipping.address,
-                paymentID: data.payerID,
-              };
-            })
-            .then(async function (infor) {
-              try {
-                const { paymentID, address } = infor;
+          try {
+            const details = await actions.order.capture();
+            const infor = details.purchase_units[0];
+            const paymentID = data.payerID;
+            const address = infor.shipping.address;
 
-                await httpRequest.post(
-                  "/api/payment",
-                  { cart, paymentID, address },
-                  {
-                    headers: { Authorization: token },
-                  }
-                );
-                await httpRequest.patch(
-                  "/user/addcart",
-                  { cart: [] },
-                  {
-                    headers: { Authorization: token },
-                  }
-                );
-                setCart([]);
-                toastSuccess("Order has been successfully");
-              } catch (error) {
-                toastError("Error while updating");
-                errorInfor(error);
-              }
-            });
+            await httpRequest.post(
+              "/api/payment",
+              { cart, paymentID, address },
+              { headers: { Authorization: token } }
+            );
+            await httpRequest.patch(
+              "/user/addcart",
+              { cart: [] },
+              { headers: { Authorization: token } }
+            );
+            setCart([]);
+            toastSuccess("Order has been successfully");
+          } catch (error) {
+            toastError("Error while updating");
+            errorInfor(error);
+          }
         }}
       />
     </>

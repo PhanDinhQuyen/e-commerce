@@ -1,34 +1,38 @@
-import { useState } from "react";
+import { useState, useLayoutEffect, useRef, useCallback } from "react";
 import classNames from "classnames/bind";
 
 import style from "./ScrollOnTop.module.scss";
-import { useEffect } from "react";
 
 const cx = classNames.bind(style);
 
 export default function ScrollOnTop() {
   const [visible, setVisible] = useState(false);
-  // const [opacity, setOpacity] = useState(false);
 
-  const toggleVisible = () => {
+  const toggleVisible = useCallback(() => {
     if (window.pageYOffset > 200) {
       setVisible(true);
     } else {
       setVisible(false);
     }
-  };
+  }, []);
 
-  const handleClickMoveTop = () => {
+  const handleClickMoveTop = useCallback(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", toggleVisible);
-    return () => window.removeEventListener("scroll", toggleVisible);
   }, []);
+
+  const scrollEventListener = useRef();
+
+  useLayoutEffect(() => {
+    scrollEventListener.current = toggleVisible;
+    window.addEventListener("scroll", scrollEventListener.current);
+
+    return () => {
+      window.removeEventListener("scroll", scrollEventListener.current);
+    };
+  }, [toggleVisible]);
 
   return (
     <button

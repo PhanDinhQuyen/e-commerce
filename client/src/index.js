@@ -1,10 +1,12 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import GlobalStyle from "./components/GlobalStyle";
 import DataProvider from "./components/GlobalState";
-import App from "./App";
+
+const LazyApp = lazy(() => import("./App"));
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -23,7 +25,9 @@ root.render(
           theme='dark'
         />
         <Router>
-          <App />
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyApp />
+          </Suspense>
         </Router>
       </DataProvider>
     </GlobalStyle>

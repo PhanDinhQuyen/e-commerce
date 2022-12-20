@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toastError, toastSuccess } from "~/components/Toast";
 
 import errorInfor from "~/utils/errorInfor";
@@ -8,12 +8,9 @@ export default function UserAPI({ token }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
-    //Get user
-    (async () => {
+
+  const fetchUserInfo = useMemo(
+    () => async () => {
       try {
         const data = await httpRequest.get(`/user/infor`, {
           headers: { Authorization: token },
@@ -24,11 +21,18 @@ export default function UserAPI({ token }) {
       } catch (error) {
         errorInfor(error);
       }
-    })();
-    //
-  }, [token]);
+    },
+    [token]
+  );
 
-  const addCart = async (product) => {
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    fetchUserInfo();
+  }, [token, fetchUserInfo]);
+
+  const addItemToCart = async (product) => {
     if (!isLogin) return toastError("Please login!");
 
     const check = cart.every((item) => item._id !== product._id);
@@ -56,6 +60,6 @@ export default function UserAPI({ token }) {
     login: [isLogin, setIsLogin],
     admin: [isAdmin, setIsAdmin],
     cart: [cart, setCart],
-    addCart: addCart,
+    addCart: addItemToCart,
   };
 }

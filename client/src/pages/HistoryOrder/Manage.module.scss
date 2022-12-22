@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: var(--width-default);
+  padding: 2.5rem;
+  gap: 2rem;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    word-wrap: anywhere;
+  }
+
+  .none_wrap {
+    word-wrap: normal;
+  }
+  th {
+    word-wrap: break-word;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid black;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  th {
+    background-color: #4caf50;
+    color: white;
+  }
+}

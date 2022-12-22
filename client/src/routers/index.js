@@ -1,4 +1,12 @@
-import { Home, Register, Login, DetailProduct, Manage, Cart } from "~/pages";
+import {
+  Home,
+  Register,
+  Login,
+  DetailProduct,
+  HistoryOrder,
+  Cart,
+  History,
+} from "~/pages";
 import NotFound from "~/pages/NotFound";
 
 const publicRouters = [
@@ -39,8 +47,13 @@ const publicRouters = [
 
 const praviteRouters = [
   {
-    path: "/admin/manage",
-    page: Manage,
+    path: "/user/historyOrder",
+    page: HistoryOrder,
+    layout: "default",
+  },
+  {
+    path: "/history/:id",
+    page: History,
     layout: "default",
   },
 ];

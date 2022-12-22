@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+  max-width: var(--width-default);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  table {
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid black;
+  }
+  th {
+    background-color: #4caf50;
+    color: white;
+  }
+  gap: 2rem;
+  word-wrap: anywhere;
+}
+
+.image {
+  max-width: 300px;
+  min-width: 150px;
+  line-height: 0;
+  img {
+    object-fit: cover;
+    width: 100%;
+  }
+}

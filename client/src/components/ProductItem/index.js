@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import { Link } from "react-router-dom";
 
 import style from "./ProductItem.module.scss";
 
@@ -20,7 +21,12 @@ export default function ProductItem({ product, addCart }) {
           <b>Price: {price}$</b>
         </div>
         <button onClick={() => addCart(product)} className={cx("buy")}>
-          Buy now
+          <Link
+            style={{ width: "100%", display: "block", padding: "1rem 2rem" }}
+            to='/user/cart'
+          >
+            Buy now
+          </Link>
         </button>
       </div>
     </div>

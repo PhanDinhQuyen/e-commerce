@@ -113,10 +113,12 @@
     height: 100vh;
     gap: 2rem;
     padding: 0 1rem;
+    display: none;
     &_active {
       visibility: visible;
       animation: 500ms linear alternate menu;
       transform: translate(-50%);
+      display: flex !important;
     }
   }
   .list_action::before {

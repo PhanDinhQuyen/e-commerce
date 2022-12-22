@@ -7,7 +7,7 @@ import { praviteRouters, publicRouters } from "./routers";
 
 export default function App() {
   const state = useContext(GlobalState);
-  const [isAdmin] = state.user.admin;
+  const [isLogin] = state.user.login;
   const layoutOptions = {
     default: DefaultLayout,
   };
@@ -28,8 +28,7 @@ export default function App() {
           ></Route>
         );
       })}
-      {/* Only admin render router */}
-      {isAdmin &&
+      {isLogin &&
         praviteRouters.map((router) => {
           const Page = router.page;
           const Layout = layoutOptions[router.layout] || Fragment;

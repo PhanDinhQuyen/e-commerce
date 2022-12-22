@@ -12,7 +12,6 @@ export default function ProductAPI() {
         const data = await httpRequest.get("/api/product");
 
         setProducts(data.products);
-        console.log(data.products);
       } catch (error) {
         errorInfor(error);
       }

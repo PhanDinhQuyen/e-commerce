@@ -8,7 +8,7 @@ export default function UserAPI({ token }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
-
+  const [history, setHistory] = useState([]);
   const fetchUserInfo = useMemo(
     () => async () => {
       try {
@@ -25,12 +25,34 @@ export default function UserAPI({ token }) {
     [token]
   );
 
+  const fetchHistory = useMemo(
+    () => async () => {
+      try {
+        if (isAdmin) {
+          const data = await httpRequest.get("/api/payment", {
+            headers: { Authorization: token },
+          });
+          setHistory(data);
+        } else {
+          const data = await httpRequest.get("/user/payment", {
+            headers: { Authorization: token },
+          });
+          setHistory(data);
+        }
+      } catch (error) {
+        errorInfor(error);
+      }
+    },
+    [token, isAdmin]
+  );
+
   useEffect(() => {
     if (!token) {
       return;
     }
+    fetchHistory();
     fetchUserInfo();
-  }, [token, fetchUserInfo]);
+  }, [token, fetchUserInfo, fetchHistory]);
 
   const addItemToCart = async (product) => {
     if (!isLogin) return toastError("Please login!");
@@ -61,5 +83,6 @@ export default function UserAPI({ token }) {
     admin: [isAdmin, setIsAdmin],
     cart: [cart, setCart],
     addCart: addItemToCart,
+    history: [history, setHistory],
   };
 }

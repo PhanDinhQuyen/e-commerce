@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable no-unused-vars */
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, To } from "react-router-dom";
 import { CgMenu, CgClose } from "react-icons/cg";
 
 import style from "./Header.module.scss";
@@ -15,10 +16,10 @@ const cx = classNames.bind(style);
 
 export default function Header() {
   const state = useContext(GlobalState);
-  const [isLogin] = state.user.login;
-  const [isAdmin] = state.user.admin;
+  const [isLogin, setLogin] = state.user.login;
+  const [_, setAdmin] = state.user.admin;
   const [close, setClose] = useState(false);
-
+  const { pathname } = useLocation();
   const handleClickButton = () => {
     localStorage.removeItem("userLogin");
     (async () => {
@@ -28,11 +29,23 @@ export default function Header() {
         errorInfor(e);
       }
     })();
-    handleClickLogo();
+    window.location.assign("/");
+    setAdmin(false);
+    setLogin(false);
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 786) {
+        setClose(false);
+      }
+    });
+  }, []);
+
   const handleClickLogo = () => {
-    window.location.assign("/");
+    if (pathname === "/") {
+      window.location.assign("/");
+    }
   };
 
   const hanleCloseMenu = () => {
@@ -51,13 +64,16 @@ export default function Header() {
         >
           <Link to='/user/cart'>Cart</Link>
 
-          {isAdmin && <Link to='/admin/manage'>Manage</Link>}
+          {isLogin && <Link to='/user/historyOrder'>Manage</Link>}
           {!isLogin ? (
             <Link className={cx("login_btn")} to='/login'>
               Log in
             </Link>
           ) : (
-            <button className={cx("logout_btn")} onClick={handleClickButton}>
+            <button
+              className={cx("logout_btn")}
+              onClick={() => handleClickButton()}
+            >
               Log out
             </button>
           )}

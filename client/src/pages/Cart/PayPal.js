@@ -8,7 +8,7 @@ import errorInfor from "~/utils/errorInfor";
 
 const initialOptions = {
   "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID,
-  currency: "USD",
+  components: "buttons",
 };
 
 const ButtonWrapper = ({ amount }) => {
@@ -23,8 +23,7 @@ const ButtonWrapper = ({ amount }) => {
       <PayPalButtons
         style={style}
         disabled={false}
-        fundingSource={undefined}
-        createOrder={(data, actions) => {
+        createOrder={(_, actions) => {
           return actions.order.create({
             purchase_units: [
               {
@@ -48,6 +47,7 @@ const ButtonWrapper = ({ amount }) => {
               { cart, paymentID, address },
               { headers: { Authorization: token } }
             );
+
             await httpRequest.patch(
               "/user/addcart",
               { cart: [] },
@@ -60,6 +60,12 @@ const ButtonWrapper = ({ amount }) => {
             errorInfor(error);
           }
         }}
+        onCancel={() => {
+          toastError("Order has been canceled");
+        }}
+        onError={() => {
+          toastError("Error while updating");
+        }}
       />
     </>
   );
@@ -71,7 +77,6 @@ export default function PayPalButton({ amount = 0 }) {
       <PayPalScriptProvider
         options={{
           ...initialOptions,
-          components: "buttons",
         }}
       >
         <ButtonWrapper showSpinner={true} amount={amount} />

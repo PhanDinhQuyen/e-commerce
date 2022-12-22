@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Payment } = require("../models");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -125,6 +125,15 @@ const userController = {
           res.status(200).json({ accessToken });
         }
       );
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  history: async (req, res) => {
+    try {
+      const history = await Payment.find({ user_id: req.user.id });
+
+      res.json(history);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

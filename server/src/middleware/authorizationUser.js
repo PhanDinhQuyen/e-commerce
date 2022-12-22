@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authorizationUser = async (req, res, next) => {
+const authorizationUser = (req, res, next) => {
   try {
     const token = req.header("Authorization");
     if (!token) {
@@ -8,6 +8,7 @@ const authorizationUser = async (req, res, next) => {
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
       if (err) return res.status(400).json({ msg: "Invalid authorization" });
+      console.log(token);
       req.user = token;
       next();
     });

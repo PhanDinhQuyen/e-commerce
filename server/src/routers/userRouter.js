@@ -11,5 +11,5 @@ router.post("/login", userController.login);
 router.post("/register", userController.register);
 // Patch
 router.patch("/addcart", authorizationUser, userController.addCart);
-
+router.get("/payment", authorizationUser, userController.history);
 module.exports = router;

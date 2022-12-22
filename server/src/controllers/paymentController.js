@@ -11,8 +11,6 @@ const paymentController = {
   },
   createPayment: async (req, res) => {
     try {
-      console.log(req.user);
-      console.log(1);
       const user = await User.findById(req.user.id).select("name email");
 
       if (!user) return res.status(400).json({ msg: "User does not exist" });
@@ -33,6 +31,15 @@ const paymentController = {
 
       await newPayment.save();
       res.json({ msg: "Payment Succes!" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  changePayment: async (req, res) => {
+    try {
+      const { _id, status } = req.body;
+      await Payment.findByIdAndUpdate(_id, { status });
+      return res.status(200).json({ msg: "Updated successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

@@ -26,7 +26,7 @@ export default function HistoryOrderItem({ changeStatus, ...props }) {
           id=''
         />
       </td>
-      <td>
+      <td style={{ wordWrap: "break-word" }}>
         <Link to={`/history/${props._id}`}>View</Link>
       </td>
     </tr>

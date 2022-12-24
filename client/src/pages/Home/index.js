@@ -5,7 +5,6 @@ import style from "./Home.module.scss";
 import classNames from "classnames/bind";
 
 import errorInfor from "~/utils/errorInfor";
-import ScrollOnTop from "~/components/ScrollOnTop";
 import * as httpRequest from "~/utils/httpRequest";
 import { IconNext, IconBack } from "~/static/Icons";
 import { GlobalState } from "~/components/GlobalState";
@@ -85,7 +84,9 @@ export default function Home() {
                   View
                 </Link>
                 <button
-                  onClick={() => addCart(product)}
+                  onClick={() => {
+                    addCart(product);
+                  }}
                   className={cx("button-30")}
                 >
                   Add to cart
@@ -116,7 +117,6 @@ export default function Home() {
         <button disabled={products.length === 0} onClick={handleNextPage}>
           <IconNext className={cx("action_icon")} />
         </button>
-        <ScrollOnTop />
       </div>
     </div>
   );

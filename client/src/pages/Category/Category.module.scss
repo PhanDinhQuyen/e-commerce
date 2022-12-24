@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  gap: 2rem;
+  max-width: var(--width-default);
+  width: 100%;
+  justify-content: space-between;
+  padding: 2.5rem;
+  align-items: flex-start;
+  input {
+    flex: 1;
+    padding: 1rem 0.5rem;
+  }
+}
+.left {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  input {
+    border-bottom: 1px solid;
+  }
+}
+.right {
+  flex: 1;
+}
+
+.upload {
+  padding: 1rem 1.5rem;
+}

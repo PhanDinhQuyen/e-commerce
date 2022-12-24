@@ -9,21 +9,23 @@ const LazyApp = lazy(() => import("./App"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+const optionsToast = {
+  position: "top-right",
+  autoClose: 10000,
+  hideProgressBar: false,
+  newestOnTop: false,
+  closeOnClick: true,
+  rtl: false,
+  style: { zIndex: "99999" },
+  draggable: true,
+  theme: "dark",
+};
+
 root.render(
   <React.StrictMode>
     <GlobalStyle>
       <DataProvider>
-        <ToastContainer
-          position='top-right'
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          style={{ zIndex: "10000000" }}
-          draggable
-          theme='dark'
-        />
+        <ToastContainer {...optionsToast} />
         <Router>
           <Suspense fallback={<div>Loading...</div>}>
             <LazyApp />

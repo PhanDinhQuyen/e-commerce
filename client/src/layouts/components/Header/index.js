@@ -64,7 +64,7 @@ export default function Header() {
         >
           <Link to='/user/cart'>Cart</Link>
 
-          {isLogin && <Link to='/user/historyOrder'>Manage</Link>}
+          {isLogin && <Link to='/user/historyOrder'>History</Link>}
           {!isLogin ? (
             <Link className={cx("login_btn")} to='/login'>
               Log in

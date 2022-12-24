@@ -1,0 +1,14 @@
+.wrapper {
+  position: absolute;
+  top: 1rem;
+  left: 2.5rem;
+  font-size: 3rem;
+  z-index: 200;
+  line-height: 0;
+  background: #fff;
+  transition: 0.2s all ease;
+  &:hover {
+    background-color: #4caf50;
+    color: #fff;
+  }
+}

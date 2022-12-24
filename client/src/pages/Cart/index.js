@@ -4,7 +4,6 @@ import { GlobalState } from "~/components/GlobalState";
 
 import CartItem from "~/components/Cart/CartItem";
 import PayPalButton from "./PayPal";
-
 import * as httpRequest from "~/utils/httpRequest";
 
 import style from "./Cart.module.scss";

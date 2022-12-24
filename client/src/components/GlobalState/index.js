@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import UserAPI from "~/apis/userAPI";
 import ProductAPI from "~/apis/productAPI";
+import CategoryAPI from "~/apis/categoryAPI";
 import * as httpRequest from "~/utils/httpRequest";
 
 export const GlobalState = createContext();
@@ -28,6 +29,7 @@ export default function DataProvider({ children }) {
     token: [token, setToken],
     products: ProductAPI(),
     user: UserAPI({ token }),
+    ...CategoryAPI(),
   };
 
   return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;

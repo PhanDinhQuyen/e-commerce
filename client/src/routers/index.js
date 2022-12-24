@@ -6,6 +6,9 @@ import {
   HistoryOrder,
   Cart,
   History,
+  Manage,
+  Upload,
+  Category,
 } from "~/pages";
 import NotFound from "~/pages/NotFound";
 
@@ -57,4 +60,23 @@ const praviteRouters = [
     layout: "default",
   },
 ];
-export { publicRouters, praviteRouters };
+
+const adminRouters = [
+  {
+    path: "/admin/manage",
+    page: Manage,
+    layout: "default",
+  },
+  {
+    path: "/admin/upload",
+    page: Upload,
+    layout: "default",
+  },
+  {
+    path: "/admin/category",
+    page: Category,
+    layout: "default",
+  },
+];
+
+export { publicRouters, praviteRouters, adminRouters };

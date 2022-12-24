@@ -42,6 +42,13 @@ export default function DetailProduct() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  const scrollTop = (option) => {
+    window.scrollTo({
+      top: 0,
+      behavior: option ? "smooth" : "auto",
+    });
+  };
+
   if (!product) {
     return (
       <div className={cx("wrapper")}>
@@ -63,12 +70,7 @@ export default function DetailProduct() {
                 .slice(0, 3)
                 .map((item) => (
                   <Link
-                    onClick={() =>
-                      window.scrollTo({
-                        top: 0,
-                        behavior: "smooth",
-                      })
-                    }
+                    onClick={() => scrollTop(true)}
                     to={`/product/detail/${item._id}`}
                     key={item?._id}
                     className={cx("product")}

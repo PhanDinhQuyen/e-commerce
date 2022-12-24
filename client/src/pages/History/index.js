@@ -56,8 +56,8 @@ export default function History() {
       </table>
       <table>
         <thead>
-          <tr>
-            <th></th>
+          <tr className={cx("head_none_wrap")}>
+            <th className={cx("hidden")}></th>
             <th>Products</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -66,7 +66,7 @@ export default function History() {
         <tbody>
           {orderDetails.cart.map((item) => (
             <tr key={item._id}>
-              <td className={cx("image")}>
+              <td className={cx("image", "hidden")}>
                 <img src={item.image.url} alt='' />
               </td>
               <td>{item.title}</td>

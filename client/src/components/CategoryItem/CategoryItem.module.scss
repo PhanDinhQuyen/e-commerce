@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  button {
+    padding: 1rem 1.5rem;
+    font-size: 2rem;
+  }
+  input {
+    flex: 1;
+    max-width: 100%;
+  }
+}
+.input_focus {
+  animation: borderBottom 1s forwards linear;
+  border-bottom: 0.2rem solid transparent;
+}
+
+.edit {
+  background-color: var(--clr-primary-5);
+  color: var(--white);
+}
+.trash {
+  background-color: var(--clr-red-dark);
+  color: var(--white);
+}
+
+@keyframes borderBottom {
+  from {
+    border-bottom: 0.2rem solid transparent;
+  }
+  to {
+    border-bottom: 0.2rem solid red;
+  }
+}

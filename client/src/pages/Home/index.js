@@ -26,7 +26,6 @@ export default function Home() {
         const data = await httpRequest.get(
           `/api/product?sort=${sortByCurrent}&page=${pageCurrent}`
         );
-        console.log(data);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {

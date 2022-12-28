@@ -21,7 +21,7 @@ export default function CartItem(props) {
   } = props;
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("image")}>
+      <div className={cx("content")}>
         <div className={cx("wrapper_img")}>
           <img src={image.url} alt='' />
         </div>

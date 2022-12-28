@@ -6,6 +6,7 @@ import * as httpRequest from "~/utils/httpRequest";
 import errorInfor from "~/utils/errorInfor";
 import { toastError, toastSuccess } from "~/components/Toast";
 import CategoryItem from "~/components/CategoryItem";
+import { CgSoftwareUpload } from "react-icons/cg";
 
 const cx = classNames.bind(style);
 export default function Category() {
@@ -18,7 +19,7 @@ export default function Category() {
 
   const createCategory = async () => {
     const _name = name.trim();
-    if (!_name || name.length === 0) {
+    if (!_name || _name.length === 0) {
       toastError("Invalid name");
       return;
     }
@@ -72,8 +73,41 @@ export default function Category() {
     }
   };
 
+  const handleEditCategory = async (name, id) => {
+    try {
+      await httpRequest.patch(
+        `/api/category/${id}`,
+        { name },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      toastSuccess("Updated category successfully!");
+    } catch (error) {
+      toastError(error.message);
+      errorInfor(error);
+    }
+  };
+  const renderCategory = () => {
+    const categoryReverse = [...categories].reverse();
+    return categoryReverse.map((item) => (
+      <CategoryItem
+        key={item._id}
+        {...item}
+        editCategory={handleEditCategory}
+        delCategory={hanleDelCategory}
+      />
+    ));
+  };
   return (
-    <div className={cx("wrapper")}>
+    <div
+      style={{
+        justifyContent: categories.length === 0 && "center",
+      }}
+      className={cx("wrapper")}
+    >
       <div className={cx("left")}>
         <input
           ref={inputRef}
@@ -82,20 +116,15 @@ export default function Category() {
           onKeyUp={handleKeyPress}
           onChange={handleChangeName}
           placeholder='Name category'
+          data-name={name}
         />
         <button className={cx("upload")} onClick={createCategory}>
-          Upload
+          <CgSoftwareUpload />
         </button>
       </div>
-      <div className={cx("right")}>
-        {categories.map((item) => (
-          <CategoryItem
-            key={item._id}
-            {...item}
-            delCategory={hanleDelCategory}
-          />
-        ))}
-      </div>
+      {categories.length > 0 && (
+        <div className={cx("right")}>{renderCategory()}</div>
+      )}
     </div>
   );
 }

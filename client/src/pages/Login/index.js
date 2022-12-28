@@ -49,7 +49,6 @@ export default function Login() {
       for (const key in user) {
         emptyValue[key] = !Boolean(user[key]);
       }
-      console.log(emptyValue);
       setIsEmptyValue(emptyValue);
       return;
     }

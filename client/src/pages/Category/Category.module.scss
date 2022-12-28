@@ -1,13 +1,14 @@
 .wrapper {
   display: flex;
-  gap: 2rem;
   max-width: var(--width-default);
   width: 100%;
   justify-content: space-between;
+  gap: 5rem;
   padding: 2.5rem;
   align-items: flex-start;
+
   input {
-    flex: 1;
+    font-size: 1.5rem;
     padding: 1rem 0.5rem;
   }
 }
@@ -15,14 +16,51 @@
   display: flex;
   flex: 1;
   gap: 1rem;
-  input {
-    border-bottom: 1px solid;
+  position: relative;
+  width: 100%;
+  input:focus {
+    border-color: var(--clr-primary-3);
   }
+  input {
+    border-bottom: 0.2rem solid black;
+    display: block;
+    flex: 1;
+  }
+  max-width: 500px;
 }
+
 .right {
+  display: flex;
+  flex-direction: column;
+  input {
+    text-align: right;
+  }
+  max-height: 20rem;
+  padding-right: 0.5rem;
+  overflow: overlay;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
   flex: 1;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 824px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 5rem;
+    align-items: center;
+  }
+  .left {
+    max-width: none;
+  }
+  button {
+    padding: 0.5rem 1rem !important;
+  }
 }
 
 .upload {
   padding: 1rem 1.5rem;
+  font-size: 2rem;
+  background-color: var(--clr-primary-5);
+  color: var(--white);
 }

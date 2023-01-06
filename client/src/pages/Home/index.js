@@ -17,7 +17,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useSearchParams();
-  const sortByCurrent = page.get("s") || "createdAt";
+  const sortByCurrent = page.get("s") || "-createdAt";
   const pageCurrent = page.get("p") || 1;
   useEffect(() => {
     setLoading(true);

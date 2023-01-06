@@ -12,15 +12,18 @@ export default function DataProvider({ children }) {
     const userLogin = localStorage.getItem("userLogin");
     if (userLogin) {
       //Refresh token
-      (async () => {
+      const refreshToken = async () => {
         try {
           const token = await httpRequest.get("/user/refreshtoken");
 
           setToken(token.accessToken);
+          setTimeout(() => refreshToken(), 25000);
         } catch (error) {
           throw new Error(error);
         }
-      })();
+      };
+
+      refreshToken();
     }
     //
   }, []);

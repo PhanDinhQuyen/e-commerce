@@ -52,7 +52,7 @@ export default function Register() {
       window.location.href = "/";
     } catch (error) {
       setLoading(false);
-      toastError("Please check your name, email or password!");
+      toastError(error.response.data.msg);
       errorInfor(error);
     }
   };

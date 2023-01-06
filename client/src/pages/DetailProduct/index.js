@@ -18,7 +18,9 @@ export default function DetailProduct() {
   const { id } = useParams();
   const state = useContext(GlobalState);
   const addCart = state.user.addCart;
+  const [token] = state.token;
   const [productState] = state.products;
+  const [isAdmin] = state.user.admin;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -36,12 +38,31 @@ export default function DetailProduct() {
         } catch (error) {
           setLoading(false);
           errorInfor(error);
+          return "Not found";
         }
       })();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const removeProduct = async (id) => {
+    try {
+      setLoading(true);
+      const result = await httpRequest.del(`/api/product/${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log(result);
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      errorInfor(error);
+      setLoading(false);
+    }
+  };
+
   const scrollTop = (option) => {
     window.scrollTo({
       top: 0,
@@ -50,18 +71,25 @@ export default function DetailProduct() {
   };
 
   if (!product) {
+    return "Not found";
+  }
+  if (loading) {
     return (
       <div className={cx("wrapper")}>
         <Loading />
       </div>
     );
   }
-
   return (
     <div className={cx("wrapper")}>
       {!loading && (
         <>
-          <ProductItem product={product} addCart={addCart} />
+          <ProductItem
+            removeProduct={removeProduct}
+            product={product}
+            addCart={addCart}
+            isAdmin={isAdmin}
+          />
           <div className={cx("related")}>
             <h3>Related Product</h3>
             <div className={cx("related_product")}>

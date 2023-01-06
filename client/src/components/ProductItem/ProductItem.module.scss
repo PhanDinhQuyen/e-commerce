@@ -3,6 +3,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   margin: 0 auto;
+  position: relative;
 }
 
 .image {
@@ -43,6 +44,15 @@
     background: var(--clr-primary-3);
     color: var(--clr-grey-9);
   }
+}
+
+.remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 3rem;
+  background-color: transparent;
+  color: var(--clr-red-dark);
 }
 
 @media screen and (max-width: 900px) {

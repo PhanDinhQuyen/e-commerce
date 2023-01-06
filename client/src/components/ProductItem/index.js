@@ -3,18 +3,40 @@ import { Link } from "react-router-dom";
 
 import style from "./ProductItem.module.scss";
 
+import { CgTrash } from "react-icons/cg";
+
 const cx = classNames.bind(style);
 
-export default function ProductItem({ product, addCart }) {
-  const { title, image, content, category, description, price } = product;
+export default function ProductItem({
+  product,
+  addCart,
+  removeProduct,
+  isAdmin,
+}) {
+  const {
+    title,
+    image,
+    content,
+    category,
+    description,
+    price,
+    product_id,
+    _id,
+  } = product;
   return (
     <div className={cx("wrapper")}>
+      {isAdmin && (
+        <button className={cx("remove")} onClick={() => removeProduct(_id)}>
+          <CgTrash />
+        </button>
+      )}
       <div className={cx("image")}>
         <img src={image.url} alt='' loading='lazy' />
       </div>
       <div className={cx("detail")}>
         <div className={cx("infor")}>
           <h2>{title}</h2>
+          <p>#{product_id}</p>
           <p>{category}</p>
           <p>{content}</p>
           <p>{description}</p>

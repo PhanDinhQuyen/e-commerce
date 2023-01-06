@@ -24,12 +24,11 @@ export default function Search() {
   useEffect(() => {
     if (!debounceValue) return;
     setLoading(true);
-
     (async () => {
       try {
         const data = await httpRequest.get("/api/product", {
           params: {
-            "lower_title[regex]": debounceValue,
+            "lower_title[regex]": debounceValue.toLowerCase(),
           },
         });
         setListProductSearch([...data.products]);
@@ -67,7 +66,10 @@ export default function Search() {
             {listProductSearch.map((product) => (
               <li key={product._id}>
                 <Link
-                  onClick={handleHideListProduct}
+                  onClick={() => {
+                    setSearchTerm("");
+                    handleHideListProduct();
+                  }}
                   to={`/product/detail/${product._id}`}
                   className={cx("wrapper_search_item")}
                 >

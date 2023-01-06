@@ -11,7 +11,6 @@ const uploadController = {
   upload: async (req, res) => {
     try {
       const { file } = req.files;
-      console.log(file);
       if (!file || Object.keys(file).length === 0) {
         removeTmp(file.tempFilePath);
         return res.status(400).json({ message: "No files uploaded" });

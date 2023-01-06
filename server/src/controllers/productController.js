@@ -26,7 +26,6 @@ class APIFeatures {
   }
 
   sorting() {
-    console.log("sorting", this.queryString.sort);
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
@@ -87,7 +86,6 @@ const productController = {
     }
   },
   getProducts: async (req, res) => {
-    console.log("lol", req.query);
     try {
       const features = new APIFeatures(
         Product.find().select(`-lower_title`),

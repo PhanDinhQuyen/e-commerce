@@ -44,4 +44,3 @@ REACT_APP_ROLE_ADMIN=
   npm run dev
 ```
 
-_/ --Happy coding-- /_
